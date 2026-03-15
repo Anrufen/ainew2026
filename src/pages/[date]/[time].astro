@@ -17,7 +17,8 @@ export function getStaticPaths() {
 
 const { date, time } = Astro.params;
 const version = `${date}T${time.replace('-', ':')}`;
-const newsData = await getNewsByVersion(version);
+const env = Astro.locals.runtime?.env;
+const newsData = await getNewsByVersion(version, env);
 
 if (!newsData) {
   return Astro.redirect('/404');

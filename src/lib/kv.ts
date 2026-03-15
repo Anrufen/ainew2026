@@ -49,7 +49,7 @@ export async function getNewsByVersion(version: string, env?: any): Promise<News
   }
   
   // For development, we only have one mock version
-  if (version === mockData.version.replace(/[:]/g, '-')) {
+  if (version === mockData.version) {
     return mockData as NewsData;
   }
   

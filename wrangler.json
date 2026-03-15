@@ -10,5 +10,11 @@
 	"observability": {
 		"enabled": true
 	},
+	"kv_namespaces": [
+		{
+			"binding": "NEWS_KV",
+			"id": "e1711bbf25e742b88f883dc50372a59a"
+		}
+	],
 	"upload_source_maps": true
 }

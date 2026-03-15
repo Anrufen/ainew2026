@@ -4,10 +4,11 @@ import NewspaperHeader from '../components/NewspaperHeader.astro';
 import NewsGrid from '../components/NewsGrid.astro';
 import StockAnalysis from '../components/StockAnalysis.astro';
 import Perspectives from '../components/Perspectives.astro';
-import { getLatestNews } from '../lib/kv';
+import { getLatestNews, getNewsByVersion } from '../lib/kv';
 
-// In a real Cloudflare Worker environment, 'Astro.locals.runtime.env' would contain the bindings
-const newsData = await getLatestNews();
+// 获取 Cloudflare 环境环境变量
+const env = Astro.locals.runtime?.env;
+const newsData = await getLatestNews(env);
 ---
 
 <!DOCTYPE html>

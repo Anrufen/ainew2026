@@ -4,6 +4,7 @@ import NewspaperHeader from '../../components/NewspaperHeader.astro';
 import NewsGrid from '../../components/NewsGrid.astro';
 import StockAnalysis from '../../components/StockAnalysis.astro';
 import Perspectives from '../../components/Perspectives.astro';
+import QuickScan from '../../components/QuickScan.astro';
 import { getNewsByVersion } from '../../lib/kv';
 
 export function getStaticPaths() {
@@ -57,6 +58,16 @@ if (!newsData) {
             </div>
             
             <Perspectives perspectives={newsData.perspectives} />
+
+            {newsData.quick_scan && (
+                <>
+                    <div class="section-title">
+                        <span>极速快报</span>
+                        <span>Quick Scan</span>
+                    </div>
+                    <QuickScan scan={newsData.quick_scan} />
+                </>
+            )}
         </main>
         
         <footer style="margin-top: 4rem; text-align: center; border-top: 1px solid var(--border-color); padding-top: 2rem; color: #888; font-size: 0.8rem;">

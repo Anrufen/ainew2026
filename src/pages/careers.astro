@@ -1,0 +1,163 @@
+---
+import '../styles/magazine.css';
+import NewspaperHeader from '../components/NewspaperHeader.astro';
+
+const roles = [
+  {
+    title: "Front-end Developer",
+    responsibilities: [
+      "负责 Dmail 核心产品（包括 Web 端和移动端）的前端架构设计、开发和持续优化。",
+      "与产品经理和设计师紧密配合，实现卓越的用户体验和视觉效果。",
+      "参与前端性能优化，提升加载速度和响应性能。",
+      "研究并引入前端新技术，持续提升团队技术水平和开发效率。"
+    ],
+    requirements: [
+      "3 年以上前端开发经验，熟练掌握 TypeScript。",
+      "深入理解 React 或 Vue 框架及其生态（本项目使用 Next.js）。",
+      "精通 CSS/SCSS 以及 TailwindCSS，能够复刻复杂的 UI 设计。",
+      "熟悉前端工程化（Webpack, Vite, Turbopack 等）和自动化测试。",
+      "具备 Web3 项目经验，了解 Ethers.js, Wagmi 等库者优先。",
+      "良好的沟通协作能力，具备英文阅读和基础书写能力。"
+    ]
+  },
+  {
+    title: "Project Manager",
+    responsibilities: [
+      "负责 Dmail 相关产品的项目全生命周期管理，确项目保能按时高质量交付。",
+      "协调研发、设计、市场等跨职能团队，确保需求理解一致。",
+      "制定详细的项目计划，监控进度，识别并主动管理项目风险。",
+      "组织并主持项目相关会议（日报、周报、关键节点评审等）。",
+      "维护项目文档，确保护交付过程透明、可追溯。"
+    ],
+    requirements: [
+      "3 年以上互联网项目管理经验，熟悉 Agile/Scrum 开发流程。",
+      "熟练掌握项目进度计划编制和控制、质量管理等知识。",
+      "能够协调各种资源，监控项目运行，评估和化解风险。",
+      "有独立完成项目（从需求、开发、交付、运维的全过程）经验优先。",
+      "良好的中英文沟通和写作能力（中文、英文均可作为工作语言）。"
+    ],
+    bonus: [
+      "熟悉软件开发领域相关流程 and 测试方法论。",
+      "熟悉 AWS 云设施相关产品（IAM, EC2, S3, Lambda, SQS, CloudFront 等）。",
+      "熟悉区块链相关知识。"
+    ]
+  }
+];
+---
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>加入我们 | Dmail Careers</title>
+</head>
+<body>
+    <div class="newspaper-container">
+        <NewspaperHeader />
+        
+        <main>
+            <div class="section-title">
+                <span>加入我们的团队</span>
+                <span>CAREERS AT DMAIL</span>
+            </div>
+
+            <div class="roles-container">
+                {roles.map(role => (
+                    <section class="role-section">
+                        <h2 class="serif text-3xl">{role.title}</h2>
+                        <div class="role-content">
+                            <h4>工作职责：</h4>
+                            <ul>
+                                {role.responsibilities.map(item => <li>{item}</li>)}
+                            </ul>
+                            <h4>职位要求：</h4>
+                            <ul>
+                                {role.requirements.map(item => <li>{item}</li>)}
+                            </ul>
+                            {role.bonus && (
+                                <>
+                                    <h4>加分项：</h4>
+                                    <ul>
+                                        {role.bonus.map(item => <li>{item}</li>)}
+                                    </ul>
+                                </>
+                            )}
+                        </div>
+                        <hr class="separator" />
+                    </section>
+                ))}
+            </div>
+
+            <div class="application-info">
+                <h3 class="serif">准备好加入我们了吗？</h3>
+                <p>请将您的简历发送至：<a href="mailto:hr@dmail.ai">hr@dmail.ai</a></p>
+                <p class="hint">邮件标题格式：[职位名称] + [姓名] + [来自哪个渠道]</p>
+                <p class="note">注：Dmail 欢迎所有符合条件的候选人，不限国籍、性别、年龄及所在地区。</p>
+            </div>
+        </main>
+        
+        <footer style="margin-top: 4rem; text-align: center; border-top: 1px solid var(--border-color); padding-top: 2rem; color: #888; font-size: 0.8rem;">
+            © 2026 AI NEW INTELLIGENCE.
+        </footer>
+    </div>
+</body>
+</html>
+
+<style>
+  .roles-container {
+    margin-top: 2rem;
+  }
+  .role-section {
+    margin-bottom: 3rem;
+  }
+  .role-section h2 {
+    font-size: 2.2rem;
+    margin-bottom: 1.5rem;
+    color: var(--ink-black);
+  }
+  .role-content h4 {
+    margin: 1.5rem 0 0.5rem;
+    font-size: 1.1rem;
+    border-left: 4px solid var(--accent-red);
+    padding-left: 0.5rem;
+  }
+  .role-content ul {
+    margin: 0;
+    padding-left: 1.5rem;
+  }
+  .role-content li {
+    margin-bottom: 0.5rem;
+  }
+  .separator {
+    margin-top: 3rem;
+    border: 0;
+    border-top: 1px solid var(--border-color);
+  }
+  .application-info {
+    background: #f0f0f0;
+    padding: 2.5rem;
+    text-align: center;
+    border: 1px solid var(--border-color);
+  }
+  .application-info h3 {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+  }
+  .application-info a {
+    color: var(--accent-red);
+    font-weight: bold;
+    text-decoration: underline;
+  }
+  .hint {
+    font-size: 0.9rem;
+    color: #555;
+    margin-top: 0.5rem;
+  }
+  .note {
+    font-size: 0.8rem;
+    color: #999;
+    font-style: italic;
+    margin-top: 1.5rem;
+  }
+</style>

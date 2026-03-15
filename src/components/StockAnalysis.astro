@@ -1,0 +1,63 @@
+---
+interface Props {
+  stocks: {
+    ticker: string;
+    sentiment: string;
+    logic: string;
+    details: string;
+  }[];
+}
+
+const { stocks } = Astro.props;
+---
+<div class="stock-impact">
+  <table class="stock-table">
+    <thead>
+      <tr>
+        <th>标的</th>
+        <th>判断</th>
+        <th>核心逻辑</th>
+      </tr>
+    </thead>
+    <tbody>
+      {stocks.map(s => (
+        <tr>
+          <td class="ticker"><strong>{s.ticker}</strong></td>
+          <td class={`sentiment ${s.sentiment.includes('利好') ? 'up' : s.sentiment.includes('利空') ? 'down' : ''}`}>
+            {s.sentiment}
+          </td>
+          <td class="logic-cell">
+            <div class="logic">{s.logic}</div>
+            <div class="details">{s.details}</div>
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+
+<style>
+  .stock-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+  }
+  .stock-table th {
+    text-align: left;
+    border-bottom: 2px solid var(--ink-black);
+    padding: 0.5rem;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+  }
+  .stock-table td {
+    padding: 1rem 0.5rem;
+    border-bottom: 1px solid var(--border-color);
+    vertical-align: top;
+  }
+  .ticker { width: 80px; }
+  .sentiment { width: 100px; font-weight: bold; }
+  .sentiment.up { color: #d00; }
+  .sentiment.down { color: #008000; }
+  .logic-cell .logic { font-weight: 500; margin-bottom: 0.3rem; }
+  .logic-cell .details { font-size: 0.85rem; color: #666; font-style: italic; }
+</style>

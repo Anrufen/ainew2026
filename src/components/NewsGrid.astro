@@ -1,0 +1,29 @@
+---
+import NewsCard from './NewsCard.astro';
+
+interface Props {
+  highlights: any[];
+}
+
+const { highlights } = Astro.props;
+---
+<div class="magazine-grid">
+  {highlights.map((h, index) => (
+    <NewsCard highlight={h} featured={index === 0} />
+  ))}
+</div>
+
+<style>
+  .magazine-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 2.5rem;
+    row-gap: 1rem;
+  }
+  
+  @media (max-width: 900px) {
+    .magazine-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

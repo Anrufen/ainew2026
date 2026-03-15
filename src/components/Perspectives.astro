@@ -1,0 +1,51 @@
+---
+interface Props {
+  perspectives: {
+    role: string;
+    items: string[];
+  }[];
+}
+
+const { perspectives } = Astro.props;
+---
+<div class="perspectives-grid">
+  {perspectives.map(p => (
+    <div class="perspective-box">
+      <h3 class="serif">{p.role} 视角</h3>
+      <ul>
+        {p.items.map(item => (
+          <li>{item}</li>
+        ))}
+      </ul>
+    </div>
+  ))}
+</div>
+
+<style>
+  .perspectives-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+  }
+  .perspective-box {
+    background: #fff;
+    padding: 1.5rem;
+    border: 1px solid var(--border-color);
+    box-shadow: 4px 4px 0 #eee;
+  }
+  .perspective-box h3 {
+    margin-top: 0;
+    border-bottom: 2px solid var(--accent-red);
+    display: inline-block;
+    padding-bottom: 0.2rem;
+    margin-bottom: 1rem;
+  }
+  ul {
+    margin: 0;
+    padding-left: 1.2rem;
+  }
+  li {
+    margin-bottom: 0.8rem;
+    font-size: 0.95rem;
+  }
+</style>

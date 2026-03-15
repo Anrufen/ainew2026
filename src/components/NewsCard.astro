@@ -1,0 +1,110 @@
+---
+interface Props {
+  highlight: {
+    id: number;
+    tag: string;
+    category: string;
+    symbols: string[];
+    title: string;
+    summary: string;
+    sources: string[];
+  };
+  featured?: boolean;
+}
+
+const { highlight, featured = false } = Astro.props;
+---
+<article class={`news-card ${featured ? 'featured' : ''}`}>
+  <div class="card-meta">
+    <span class="badge">{highlight.tag}</span>
+    <span class="category">{highlight.category}</span>
+    {highlight.symbols.map(s => <span class="symbol-tag">{s}</span>)}
+  </div>
+  
+  <h2 class="serif">
+    <span class="dropcap">{highlight.id}</span>
+    {highlight.title}
+  </h2>
+  
+  <p class="summary">{highlight.summary}</p>
+  
+  <details class="sources-accordion">
+    <summary>深度分析 / 来源 ↗</summary>
+    <div class="sources-content">
+      <ul>
+        {highlight.sources.map(s => <li>{s}</li>)}
+      </ul>
+    </div>
+  </details>
+</article>
+
+<style>
+  .news-card {
+    padding-bottom: 1.5rem;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+  }
+  .news-card.featured {
+    grid-column: span 2;
+    padding-bottom: 2rem;
+  }
+  .card-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.8rem;
+    font-size: 0.8rem;
+    font-weight: bold;
+  }
+  .category {
+    text-transform: uppercase;
+    color: #666;
+  }
+  h2 {
+    font-size: 1.8rem;
+    margin: 0.5rem 0 1rem;
+    line-height: 1.2;
+    color: var(--ink-black);
+  }
+  .featured h2 {
+    font-size: 2.5rem;
+  }
+  .dropcap {
+    float: left;
+    font-size: 3rem;
+    line-height: 0.8;
+    padding-right: 0.5rem;
+    padding-top: 0.2rem;
+    font-weight: 900;
+    color: var(--accent-red);
+  }
+  .summary {
+    font-size: 1.05rem;
+    color: #333;
+    margin-bottom: 1rem;
+    text-align: justify;
+  }
+  .sources-accordion {
+    font-size: 0.9rem;
+    cursor: pointer;
+  }
+  .sources-accordion summary {
+    list-style: none;
+    font-weight: bold;
+    color: var(--accent-red);
+    text-decoration: underline;
+  }
+  .sources-accordion summary::-webkit-details-marker {
+    display: none;
+  }
+  .sources-content {
+    margin-top: 0.5rem;
+    padding: 1rem;
+    background: #f0f0f0;
+    border-left: 2px solid var(--accent-red);
+  }
+  .sources-content ul {
+    margin: 0;
+    padding-left: 1.2rem;
+  }
+</style>

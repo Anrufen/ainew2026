@@ -1,0 +1,65 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap');
+
+:root {
+  --font-serif: "Playfair Display", serif;
+  --font-sans: "Source Sans 3", sans-serif;
+  --paper-bg: #fcfaf7;
+  --ink-black: #1a1a1a;
+  --accent-red: #c00;
+  --border-color: #ddd;
+}
+
+body {
+  background-color: var(--paper-bg);
+  color: var(--ink-black);
+  font-family: var(--font-sans);
+  margin: 0;
+  padding: 0;
+  line-height: 1.6;
+}
+
+h1, h2, h3, .serif {
+  font-family: var(--font-serif);
+  font-weight: 700;
+}
+
+.newspaper-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  border-left: 1px solid var(--border-color);
+  border-right: 1px solid var(--border-color);
+  min-height: 100vh;
+}
+
+.section-title {
+  border-top: 3px solid var(--ink-black);
+  border-bottom: 1px solid var(--ink-black);
+  padding: 0.5rem 0;
+  margin: 2rem 0 1.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 1.2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Common UI elements */
+.badge {
+  background: var(--accent-red);
+  color: white;
+  padding: 0.2rem 0.5rem;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.symbol-tag {
+  background: #eee;
+  padding: 0.1rem 0.3rem;
+  font-size: 0.8rem;
+  border-radius: 2px;
+  margin-right: 0.3rem;
+  font-family: monospace;
+}

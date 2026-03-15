@@ -1,13 +1,27 @@
 ---
-import '../styles/magazine.css';
-import NewspaperHeader from '../components/NewspaperHeader.astro';
-import NewsGrid from '../components/NewsGrid.astro';
-import StockAnalysis from '../components/StockAnalysis.astro';
-import Perspectives from '../components/Perspectives.astro';
-import { getLatestNews } from '../lib/kv';
+import '../../styles/magazine.css';
+import NewspaperHeader from '../../components/NewspaperHeader.astro';
+import NewsGrid from '../../components/NewsGrid.astro';
+import StockAnalysis from '../../components/StockAnalysis.astro';
+import Perspectives from '../../components/Perspectives.astro';
+import { getNewsByVersion } from '../../lib/kv';
 
-// In a real Cloudflare Worker environment, 'Astro.locals.runtime.env' would contain the bindings
-const newsData = await getLatestNews();
+export function getStaticPaths() {
+  // Since we are using Cloudflare SSR (Server Side Rendering), we might not need getStaticPaths 
+  // if output is set to 'server' or 'hybrid'. 
+  // But for a starter template, let's provide a way to handle this.
+  return [
+    { params: { date: '2026-03-15', time: '22-50' } },
+  ];
+}
+
+const { date, time } = Astro.params;
+const version = `${date}T${time.replace('-', ':')}`;
+const newsData = await getNewsByVersion(version);
+
+if (!newsData) {
+  return Astro.redirect('/404');
+}
 ---
 
 <!DOCTYPE html>
@@ -15,7 +29,7 @@ const newsData = await getLatestNews();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI New 2026 | 深度新闻情报</title>
+    <title>AI New 2026 | 历史版本 - {version}</title>
 </head>
 <body>
     <div class="newspaper-container">
@@ -23,7 +37,7 @@ const newsData = await getLatestNews();
         
         <main>
             <div class="section-title">
-                <span>热点聚类 · Top {newsData.highlights.length}</span>
+                <span>历史版本回顾</span>
                 <span class="date-version">Version: {newsData.version}</span>
             </div>
             

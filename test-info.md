@@ -1,39 +1,46 @@
-# AI 深度新闻门户（AI New 2026）实现回顾
+# Cloudflare KV 配置指南
 
-项目已根据需求完成全面改造。
+既然您已经创建了 KV 空间（Namespace），请按照以下步骤完成项目绑定和初始化：
 
-## 已实现的核心功能
+## 1. 修改 `wrangler.json`
+在项目根目录的 `wrangler.json` 中添加 `kv_namespaces` 配置。请将 `YOUR_NAMESPACE_ID` 替换为您在 Cloudflare 控制台看到的 ID。
 
-### 1. 杂志/报纸质感排版
-- **设计风格**：采用 `Playfair Display`（衬线体）作为标题字体，结合 `Source Sans 3`（无衬线体）正文，营造出 WSJ 或纽约客的质感。
-- **非对称网格**：实现了响应式的网格布局（`NewsGrid`），自动突出首条新闻。
-- **排版特色**：增加了首字母大写（Dropcap）效果，提升视觉层次感。
+```json
+{
+  "name": "ainew2026",
+  "compatibility_date": "2025-10-08",
+  "compatibility_flags": ["nodejs_compat"],
+  "main": "./dist/_worker.js/index.js",
+  "kv_namespaces": [
+    {
+      "binding": "NEWS_KV",
+      "id": "YOUR_NAMESPACE_ID"
+    }
+  ],
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS"
+  }
+}
+```
 
-### 2. 动态内容读取
-- **架构**：封装了 `src/lib/kv.ts` 用于处理 Cloudflare KV 数据读取。
-- **灵活性**：系统支持实时拉取 JSON 渲染，无需重新构建代码即可更新内容。
-- **本地开发**：在开发环境下自动回退到 `src/data/mock_news.json`。
+## 2. 更新类型定义
+运行以下命令以生成 KV 绑定的 TypeScript 类型定义，这样在代码中就可以获得代码提示：
 
-### 3. 多版本管理与路由
-- **首页**：实时展示最新版本的深度新闻。
-- **版本化**：支持通过 `/YYYY-MM-DD/HH-mm/` 格式访问历史版本（由 `src/pages/[date]/[time].astro` 实现）。
+```bash
+npm run cf-typegen
+```
 
-### 4. 交互式功能
-- **Accordion 来源**：热点新闻的来源链接默认折叠，保持页面清爽，点击可展开查看详细分析。
-- **股票分析**：清晰的表格化展示财务/市场影响。
+## 3. 上传初始测试数据
+您可以使用 Wrangler 命令行工具将我们之前准备的 `mock_news.json` 上传到 KV 的 `latest` 键：
 
-### 5. 新增招聘页面
-- 建立了 `careers` 页面应用，按要求录入了“前端开发”与“项目经理”的职位描述及投递方式。
+```bash
+npx wrangler kv:key put --binding=NEWS_KV "latest" --path=./src/data/mock_news.json
+```
 
-## 如何验证
+## 4. 本地开发与线上部署
+- **本地开发**：目前代码已设置为：如果找不到 KV 绑定，则自动读取 `./src/data/mock_news.json`。
+- **线上部署**：在使用 `npm run deploy` 部署后，线上版本将自动通过 `NEWS_KV` 绑定读取 Cloudflare 数据库中的实时内容。
 
-1. **首页预览**：访问 [http://localhost:4321/](http://localhost:4321/) 查看最新情报。
-2. **招聘页面**：访问 [http://localhost:4321/careers/](http://localhost:4321/careers/) 查看招聘信息。
-3. **历史版本**：访问 [http://localhost:4321/2026-03-15/22-50/](http://localhost:4321/2026-03-15/22-50/)。
-
-## 关键文件
-- `src/lib/kv.ts` (数据逻辑)
-- `src/data/mock_news.json` (演示数据)
-- `src/styles/magazine.css` (视觉样式)
-- `src/pages/index.astro` (核心页面)
-- `src/pages/careers.astro` (招聘页面)
+> [!TIP]
+> 如果您希望在本地开发时也连接远程 KV，可以运行 `npx wrangler dev --remote`。

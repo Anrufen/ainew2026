@@ -1,0 +1,75 @@
+---
+interface Highlight {
+  id: number;
+  tag: string;
+  category: string;
+  symbols: string[];
+  title: string;
+  summary: string;
+  hotness: number;
+  sources: string[];
+}
+
+interface Props {
+  highlights: Highlight[];
+}
+
+const { highlights } = Astro.props;
+
+function getTagClass(tag: string): string {
+  if (tag === '最热') return 'hot';
+  if (tag === '高热') return 'trending';
+  return 'watch';
+}
+---
+
+<section class="section">
+  <div class="section-header">
+    <div class="section-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+        <path d="M2 17l10 5 10-5"/>
+        <path d="M2 12l10 5 10-5"/>
+      </svg>
+    </div>
+    <h2 class="section-title">热点聚焦</h2>
+    <span class="section-subtitle">Top Highlights</span>
+  </div>
+  
+  <div class="highlights-grid">
+    {highlights.map((item, index) => (
+      <article class={`highlight-card ${index === 0 ? 'featured' : ''}`}>
+        <div class="highlight-meta">
+          <span class={`highlight-tag ${getTagClass(item.tag)}`}>{item.tag}</span>
+          <span class="highlight-category">{item.category}</span>
+          {item.symbols.length > 0 && (
+            <div class="highlight-symbols">
+              {item.symbols.map(symbol => (
+                <span class="symbol-badge">${symbol}</span>
+              ))}
+            </div>
+          )}
+        </div>
+        
+        <h3 class="highlight-title">{item.title}</h3>
+        <p class="highlight-summary">{item.summary}</p>
+        
+        <div class="highlight-footer">
+          <div class="highlight-sources">
+            {item.sources.slice(0, 3).map(source => (
+              <span class="source-tag">{source}</span>
+            ))}
+          </div>
+          <div class="hotness-indicator">
+            <div class="hotness-bar">
+              {[...Array(10)].map((_, i) => (
+                <span class={`hotness-dot ${i < item.hotness ? 'active' : ''}`}></span>
+              ))}
+            </div>
+            <span class="hotness-value">{item.hotness}/10</span>
+          </div>
+        </div>
+      </article>
+    ))}
+  </div>
+</section>

@@ -1,0 +1,61 @@
+---
+interface StockItem {
+  ticker: string;
+  sentiment: string;
+  logic: string;
+  details: string;
+}
+
+interface Props {
+  stocks: StockItem[];
+}
+
+const { stocks } = Astro.props;
+
+function getSentimentClass(sentiment: string): string {
+  if (sentiment.includes('利好') || sentiment.includes('偏多')) return 'bullish';
+  if (sentiment.includes('利空') || sentiment.includes('偏空')) return 'bearish';
+  return 'neutral';
+}
+---
+
+<section class="section">
+  <div class="section-header">
+    <div class="section-icon" style="background: var(--accent-green-dim); color: var(--accent-green);">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+      </svg>
+    </div>
+    <h2 class="section-title">股票影响分析</h2>
+    <span class="section-subtitle">Market Impact</span>
+  </div>
+  
+  <div class="stock-table">
+    <div class="stock-header">
+      <span>股票代码</span>
+      <span>市场情绪</span>
+      <span>投资逻辑</span>
+      <span></span>
+    </div>
+    
+    {stocks.map(stock => (
+      <div class="stock-row">
+        <div class="stock-ticker">{stock.ticker}</div>
+        <div>
+          <span class={`stock-sentiment ${getSentimentClass(stock.sentiment)}`}>
+            {stock.sentiment}
+          </span>
+        </div>
+        <div>
+          <div class="stock-logic">{stock.logic}</div>
+          <div class="stock-details">{stock.details}</div>
+        </div>
+        <div class="stock-expand">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M9 18l6-6-6-6"/>
+          </svg>
+        </div>
+      </div>
+    ))}
+  </div>
+</section>

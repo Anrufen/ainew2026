@@ -1,0 +1,228 @@
+---
+import '../styles/briefing.css';
+import BriefingHeader from '../components/BriefingHeader.astro';
+import HighlightsSection from '../components/HighlightsSection.astro';
+import StockSection from '../components/StockSection.astro';
+import PerspectivesSection from '../components/PerspectivesSection.astro';
+import ContentIdeasSection from '../components/ContentIdeasSection.astro';
+import QuickScanSection from '../components/QuickScanSection.astro';
+
+// Demo data - 这里使用示例数据，实际使用时可以从 API 或数据库获取
+const newsData = {
+  "version": "2026-03-16T08:00",
+  "highlights": [
+    {
+      "id": 1,
+      "tag": "最热",
+      "category": "公司治理",
+      "symbols": ["OpenAI", "TSLA"],
+      "title": "OpenAI 内斗升级：Musk 索赔与 Sora 上线",
+      "summary": "马斯克向 OpenAI 索赔 1340 亿美元，法官质疑索赔合理性，与此同时 OpenAI 将 Sora 视频生成模型集成至 ChatGPT 以提升参与度。xAI 方面，马斯克承认架构错误并重建，联合创始人离职。这一系列动作标志着 AI 巨头间从技术竞争转向治理与资本层面的全面对抗，市场关注资金使用效率与产品落地节奏。",
+      "hotness": 10,
+      "sources": ["PYMNTS", "digitimes", "WSJ"]
+    },
+    {
+      "id": 2,
+      "tag": "高热",
+      "category": "芯片",
+      "symbols": ["NVDA", "AMD"],
+      "title": "Nvidia GTC 前夕：推理芯片与油价威胁",
+      "summary": "Nvidia 即将在 GTC 大会展示推理专用芯片及 Groq 技术，股价被看好 skyrocket，但油价突破 100 美元被视为 AI stocks 的潜在威胁。AMD 获得出口豁免，重启全球 AI 增长选项。市场焦点从训练算力转向推理成本与能源约束，硬件厂商需在性能与能耗间寻找新平衡。",
+      "hotness": 9,
+      "sources": ["The Information", "24/7 Wall St", "Investing.com"]
+    },
+    {
+      "id": 3,
+      "tag": "高热",
+      "category": "就业",
+      "symbols": ["META"],
+      "title": "Meta 拟裁员 20% 并替换为 AI 工人",
+      "summary": "报道称 Meta 可能裁员 20% 并以 AI 工人替代，ServiceNow CEO 预测 30% 大学毕业生因 AI 失业。Meta 同时发布新 AI 芯片，权衡 workforce 决策与指南。这一消息引发就业焦虑叙事，科技巨头降本增效与 AI 替代人力成为今日最大情绪池，投资者关注人力成本结构变化。",
+      "hotness": 9,
+      "sources": ["SiliconANGLE", "thestreet.com", "PYMNTS"]
+    },
+    {
+      "id": 4,
+      "tag": "关注",
+      "category": "产品",
+      "symbols": ["ANTH"],
+      "title": "Anthropic 扩容：限流放宽与伙伴网络",
+      "summary": "Anthropic 在非高峰时段加倍 Claude 使用限额，并投资 1 亿美元启动伙伴网络以促进企业 adoption。地图数据显示美国与各国 Claude 使用分布。此举显示模型厂商正从单纯技术竞争转向生态建设与用户体验优化，企业端落地速度成为关键指标。",
+      "hotness": 8,
+      "sources": ["Engadget", "Pulse 2.0", "Visual Capitalist"]
+    },
+    {
+      "id": 5,
+      "tag": "关注",
+      "category": "安全",
+      "symbols": ["GOOG"],
+      "title": "Google 零日漏洞与 Wiz 收购案",
+      "summary": "Google Chrome 曝出影响 35 亿用户的零日漏洞，攻击正在进行中。同时 Wiz 投资者拆解 Google 320 亿美元收购案。员工 push back 政府监控合同。安全与合规成为大厂扩张的隐忧，浏览器生态安全与云收购整合是本周关注焦点。",
+      "hotness": 8,
+      "sources": ["Forbes", "TechCrunch", "Tech Policy Press"]
+    },
+    {
+      "id": 6,
+      "tag": "关注",
+      "category": "政策",
+      "symbols": [],
+      "title": "AI 出口规则松绑与外国代理 charge",
+      "summary": "政府 dropping sweeping AI 芯片出口规则，Nvidia 有望恢复增长。与此同时 Tucker Carlson 声称 CIA 准备外国 agent charge，SXSW panel 讨论 AI 与言论自由。政策风向从限制转向增长，但地缘政治与法律风险仍悬于科技巨头头顶。",
+      "hotness": 7,
+      "sources": ["24/7 Wall St", "TRT World", "KEYE"]
+    }
+  ],
+  "content_ideas": [
+    {
+      "topic": "Meta 拟裁员 20% 并替换为 AI 工人",
+      "channels": {
+        "wechat": "【备选标题】「Meta 裁员 20%：AI 不是辅助，是替代」/ 「ServiceNow CEO 预言：30% 毕业生将失业」/ 「科技巨头降本增效的终极形态：人力清零」\n【开篇钩子】当扎克伯格说「效率」时，他指的是代码效率，还是人头效率？",
+        "video": "【类型】情绪共鸣类（2 分钟）\n【核心冲突】科技繁荣 vs 个体失业，juxtapose 大厂股价新高与求职者焦虑\n【封面文案】「AI 工人上岗，人类下岗？」",
+        "article": "【核心论点】AI 替代人力并非线性过程，而是结构性重构，关注被替代的岗位类型与再技能化路径\n【延伸关键词】AI workforce displacement, structural unemployment, reskilling"
+      }
+    },
+    {
+      "topic": "OpenAI 内斗升级：Musk 索赔与 Sora 上线",
+      "channels": {
+        "wechat": "【备选标题】「马斯克索赔 1340 亿：OpenAI 的代价」/ 「Sora 接入 ChatGPT：视频生成平民化」/ 「AI 巨头宫斗史：从合作到索赔」\n【开篇钩子】1340 亿美元不仅是数字，是马斯克对 AGI 控制权的最后通牒。",
+        "video": "【类型】新闻速报（3 分钟）\n【核心冲突】法律索赔 vs 产品发布，平行剪辑马斯克与 Altman 的公开言论\n【封面文案】「OpenAI 分裂：索赔与上线」",
+        "article": "【核心论点】开源与闭源之争背后是资本与治理结构的不可调和，Sora 上线是商业化变现的关键一步\n【延伸关键词】OpenAI governance, Sora monetization, AGI control"
+      }
+    },
+    {
+      "topic": "AI 狗疫苗奇迹：Tech entrepreneur 用 ChatGPT 救狗",
+      "channels": {
+        "wechat": "【备选标题】「ChatGPT 设计癌症疫苗：救了我的狗」/ 「AI 医疗落地：从论文到生命」/ 「研究人员 stunned：AI 定制疫苗成真」\n【开篇钩子】这不是科幻，这是发生在 2026 年的真实医疗案例，AI 正在改写生命科学。",
+        "video": "【类型】故事叙述（4 分钟）\n【核心冲突】传统医疗 vs AI 辅助，个人绝望 vs 技术希望\n【封面文案】「AI 救了它的命」",
+        "article": "【核心论点】AI 在医疗领域的应用从辅助诊断走向定制治疗，数据隐私与伦理是 next step\n【延伸关键词】AI drug discovery, personalized vaccine, bioinformatics"
+      }
+    }
+  ],
+  "stock_analysis": [
+    {
+      "ticker": "NVDA",
+      "sentiment": "短期利好",
+      "logic": "GTC 大会催化在即，推理芯片新发布预期强烈，出口规则松绑消除利空。",
+      "details": "Nvidia 将在 GTC 展示推理专用芯片及 Groq 技术，标志着战略重心从训练向推理转移。油价 100 美元虽构成成本威胁，但需求端强劲抵消风险。AMD 出口 reprieve 亦间接利好生态扩张。"
+    },
+    {
+      "ticker": "META",
+      "sentiment": "中性偏多",
+      "logic": "裁员 20% 预期改善利润率，新 AI 芯片发布增强基础设施控制力。",
+      "details": "Meta 拟裁员 20% 并替换 AI 工人，大幅降低运营成本。同时发布新 AI 芯片，减少对 Nvidia 依赖。但就业舆论风险可能影响品牌声誉，需关注 workforce 决策落地效果。"
+    },
+    {
+      "ticker": "GOOG",
+      "sentiment": "中性偏空",
+      "logic": "Chrome 零日漏洞影响 35 亿用户，安全信任受损，Wiz 收购整合存在不确定性。",
+      "details": "Google Chrome 曝出严重零日漏洞，攻击正在进行中，可能影响广告与生态信任。Wiz 320 亿美元收购案虽增强云安全，但整合风险与员工 push back 政府监控合同带来内部摩擦。"
+    },
+    {
+      "ticker": "中国 AI 板块",
+      "sentiment": "结构性利好",
+      "logic": "Moonshot 估值攀升，Zhipu 模型更新，显示资本与技术双重进展。",
+      "details": "Moonshot AI 瞄准 180 亿美元估值，显示资本市场对中国 AI 头部企业的认可。Zhipu 推出 GLM-OCR 模型，ByteDance 虽暂停视频 launch 但版权合规意识增强。长期看好头部模型厂商的商业化落地。"
+    }
+  ],
+  "perspectives": [
+    {
+      "role": "AI 产品经理",
+      "items": [
+        "【Agent 权限边界需明确】NanoClaw 与 Docker 合作增强 AI Agent 安全，提示我们在设计 Agent 时需考虑容器化隔离与权限最小化原则。",
+        "【Workspace analytics 是 B 端关键】OpenAI 推出 ChatGPT workspace analytics for Enterprise，B 端产品经理应关注企业数据隐私与使用效率的平衡。",
+        "【模型限流策略参考】Anthropic 在非高峰时段加倍限额，提示我们可以采用动态资源调度策略优化成本与用户体验。",
+        "【OCR 多模态落地】Zhipu GLM-OCR 模型展示文档解析能力，B 端工具应集成此类模型提升文档处理效率。"
+      ]
+    },
+    {
+      "role": "自媒体人",
+      "items": [
+        "【今日最大流量池：就业焦虑】Meta 裁员 20%+ServiceNow 失业预言，此类选题在公众号与短视频平台极易引发共鸣，建议制作对比图表。",
+        "【马斯克 drama 是永恒流量】OpenAI 索赔 1340 亿与 xAI 重建，马斯克个人 IP 仍是科技圈流量之王，适合做时间线梳理视频。",
+        "【AI 医疗奇迹具病毒性】ChatGPT 设计狗疫苗故事具有强情感属性，适合做 human-interest 故事，传播力高于纯技术新闻。",
+        "【政策风向转变】AI 出口规则松绑与外国 agent charge，适合做深度解读文，吸引政策与投资圈层读者。"
+      ]
+    },
+    {
+      "role": "科技极客",
+      "items": [
+        "【GTC 硬件前瞻】Nvidia GTC 将发布推理芯片与 Groq 技术，关注 HBM 带宽与能效比细节，值得实测对比。",
+        "【Chrome 零日漏洞】Google Chrome 35 亿用户受影响，建议立即更新浏览器，关注漏洞 CVE 编号与 exploit 细节。",
+        "【Apple MacBook Neo】MacBook Neo 可修复性创十年新高，关注 iFixit 评分与 Apple Silicon 散热结构变化。",
+        "【Valorant 新 Agent】Valorant 发布新 Agent Miks，声音基于能力，游戏开发者可关注音频交互设计创新。"
+      ]
+    }
+  ],
+  "quick_scan": [
+    {
+      "group": "NFL 自由球员签约",
+      "summary": "多篇报道涉及 49ers、Patriots、Chargers、Eagles、Giants 等球队自由球员签约与号码分配，包括 LB、WR、OT 等位置。",
+      "note": "体育新闻噪音，暂无科技追踪价值，仅关注球员数据 analytics 应用",
+      "sources": ["Niners Wire", "NESN", "Sports Illustrated", "Yahoo Sports"]
+    },
+    {
+      "group": "Valorant 游戏更新",
+      "summary": "Valorant Masters Santiago 决赛发布新 Controller Agent Miks，基于声音能力，细节包括 grenade 与角色背景。",
+      "note": "游戏行业动态，关注 AI 生成对话被替换为专业配音的趋势",
+      "sources": ["Comics Gaming Magazine", "Forbes", "Facebook"]
+    },
+    {
+      "group": "产品 rumors 与发布",
+      "summary": "Apple iPad Mini 2026 rumors，Samsung Galaxy Buds4 发售，Magic 8 Pro Air 薄手机评测，Siri bug 延迟智能家居。",
+      "note": "消费电子常规更新，关注 Apple 可修复性与 Samsung 新品销量",
+      "sources": ["PCMag", "Mashable", "Latest Rumors"]
+    },
+    {
+      "group": "政策与法律 misc",
+      "summary": "Tucker Carlson 外国 agent charge，DEA agent 电荷 dropped，Google 员工 push back 监控合同，AI 自由 speech 讨论。",
+      "note": "法律与政策边缘新闻，关注科技巨头合规风险",
+      "sources": ["TRT World", "OPB", "Tech Policy Press", "KEYE"]
+    },
+    {
+      "group": "健康与科学 misc",
+      "summary": "AI 狗疫苗救生命，AI 物理研究，AI 创造力提升，大学课程 AI 政策，AI 医疗 accountability。",
+      "note": "科学应用案例，值得收藏作为 AI 落地素材",
+      "sources": ["Yahoo Finance", "ScienceDaily", "The Guardian", "Times Higher Education"]
+    },
+    {
+      "group": "企业 misc 与市场",
+      "summary": "Microsoft 分红，JD.com Joybuy 欧洲，Upgrad 收购 Unacademy，Oil 价格威胁 AI stocks，Sensex Nifty outlook。",
+      "note": "财经常规新闻，关注 Oil 价格对 AI 能耗成本的影响",
+      "sources": ["Yahoo Finance", "Reuters", "Investor's Business Daily"]
+    }
+  ]
+};
+---
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI 科技日报 | {newsData.version}</title>
+  <meta name="description" content="洞察前沿科技动态，把握市场投资先机">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+</head>
+<body>
+  <div class="briefing-container">
+    <BriefingHeader version={newsData.version} />
+    
+    <main>
+      <HighlightsSection highlights={newsData.highlights} />
+      
+      <StockSection stocks={newsData.stock_analysis} />
+      
+      <PerspectivesSection perspectives={newsData.perspectives} />
+      
+      <ContentIdeasSection ideas={newsData.content_ideas} />
+      
+      <QuickScanSection scans={newsData.quick_scan} />
+    </main>
+    
+    <footer class="briefing-footer">
+      <p class="footer-text">AI Daily Briefing - 智能新闻聚合系统</p>
+      <p class="footer-disclaimer">本页内容由 AI 自动生成，仅供参考，不构成投资建议</p>
+    </footer>
+  </div>
+</body>
+</html>

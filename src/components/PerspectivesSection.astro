@@ -1,0 +1,57 @@
+---
+interface Perspective {
+  role: string;
+  items: string[];
+}
+
+interface Props {
+  perspectives: Perspective[];
+}
+
+const { perspectives } = Astro.props;
+
+function getAvatarClass(role: string): string {
+  if (role.includes('产品') || role.includes('PM')) return 'pm';
+  if (role.includes('媒体') || role.includes('自媒体')) return 'media';
+  return 'geek';
+}
+
+function getAvatarEmoji(role: string): string {
+  if (role.includes('产品') || role.includes('PM')) return '📊';
+  if (role.includes('媒体') || role.includes('自媒体')) return '📱';
+  return '🔧';
+}
+---
+
+<section class="section">
+  <div class="section-header">
+    <div class="section-icon" style="background: var(--accent-purple-dim); color: var(--accent-purple);">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+        <circle cx="9" cy="7" r="4"/>
+        <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+        <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+      </svg>
+    </div>
+    <h2 class="section-title">多维视角</h2>
+    <span class="section-subtitle">Expert Perspectives</span>
+  </div>
+  
+  <div class="perspectives-grid">
+    {perspectives.map(perspective => (
+      <article class="perspective-card">
+        <div class="perspective-header">
+          <div class={`perspective-avatar ${getAvatarClass(perspective.role)}`}>
+            {getAvatarEmoji(perspective.role)}
+          </div>
+          <h3 class="perspective-role">{perspective.role}</h3>
+        </div>
+        <ul class="perspective-list">
+          {perspective.items.map(item => (
+            <li class="perspective-item">{item}</li>
+          ))}
+        </ul>
+      </article>
+    ))}
+  </div>
+</section>

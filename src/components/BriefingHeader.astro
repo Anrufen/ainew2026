@@ -1,0 +1,38 @@
+---
+interface Props {
+  version: string;
+}
+
+const { version } = Astro.props;
+
+// Parse version string like "2026-03-16T08:00"
+const dateStr = version.split('T')[0];
+const timeStr = version.split('T')[1] || '00:00';
+
+const date = new Date(dateStr);
+const formattedDate = date.toLocaleDateString('zh-CN', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+  weekday: 'long'
+});
+---
+
+<header class="briefing-header">
+  <div class="header-content">
+    <div class="header-left">
+      <div class="header-badge">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+        </svg>
+        <span>AI Daily Briefing</span>
+      </div>
+      <h1 class="header-title">AI 科技日报</h1>
+      <p class="header-subtitle">洞察前沿科技动态，把握市场投资先机</p>
+    </div>
+    <div class="header-meta">
+      <div class="meta-date">{formattedDate}</div>
+      <div class="meta-version">v{timeStr}</div>
+    </div>
+  </div>
+</header>

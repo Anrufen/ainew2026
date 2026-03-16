@@ -1,0 +1,40 @@
+---
+interface ScanItem {
+  group: string;
+  summary: string;
+  note: string;
+  sources: string[];
+}
+
+interface Props {
+  scans: ScanItem[];
+}
+
+const { scans } = Astro.props;
+---
+
+<section class="section">
+  <div class="section-header">
+    <div class="section-icon" style="background: var(--accent-blue-dim); color: var(--accent-blue);">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="10"/>
+        <polyline points="12 6 12 12 16 14"/>
+      </svg>
+    </div>
+    <h2 class="section-title">快速扫描</h2>
+    <span class="section-subtitle">Quick Scan</span>
+  </div>
+  
+  <div class="quick-scan-grid">
+    {scans.map(scan => (
+      <article class="scan-card">
+        <div class="scan-header">
+          <h3 class="scan-group">{scan.group}</h3>
+          <span class="scan-sources-count">{scan.sources.length} 来源</span>
+        </div>
+        <p class="scan-summary">{scan.summary}</p>
+        <div class="scan-note">{scan.note}</div>
+      </article>
+    ))}
+  </div>
+</section>

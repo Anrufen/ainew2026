@@ -14,97 +14,135 @@ interface Props {
 
 const { highlight, featured = false } = Astro.props;
 ---
-<article class={`news-card ${featured ? 'featured' : ''}`}>
-  <div class="card-meta">
-    <span class="badge">{highlight.tag}</span>
-    <span class="category">{highlight.category}</span>
-    {highlight.symbols.map(s => <span class="symbol-tag">{s}</span>)}
+<article class="news-card card">
+  <div class="card-header">
+    <div class="card-badges">
+      <span class="rank-badge">TOP {highlight.id}</span>
+      <span class="category-label">{highlight.category}</span>
+    </div>
   </div>
   
-  <h2 class="serif">
-    <span class="dropcap">{highlight.id}</span>
-    {highlight.title}
-  </h2>
+  <h3 class="card-title">{highlight.title}</h3>
   
-  <p class="summary">{highlight.summary}</p>
+  <p class="card-summary">{highlight.summary}</p>
   
-  <details class="sources-accordion">
-    <summary>深度分析 / 来源 ↗</summary>
-    <div class="sources-content">
-      <ul>
-        {highlight.sources.map(s => <li>{s}</li>)}
-      </ul>
+  <div class="card-footer">
+    <a href="#" class="source-link">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+        <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+      </svg>
+      <span>查看来源</span>
+    </a>
+    <div class="card-tags">
+      {highlight.symbols.slice(0, 2).map(s => (
+        <span class="symbol-tag">#{s}</span>
+      ))}
     </div>
-  </details>
+  </div>
 </article>
 
 <style>
   .news-card {
-    padding-bottom: 1.5rem;
-    margin-bottom: 1.5rem;
-    border-bottom: 1px solid var(--border-color);
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
   }
-  .news-card.featured {
-    grid-column: span 2;
-    padding-bottom: 2rem;
+
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
-  .card-meta {
+
+  .card-badges {
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    margin-bottom: 0.8rem;
+  }
+
+  .rank-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.2rem 0.5rem;
+    font-size: 0.7rem;
+    font-weight: 600;
+    border-radius: 4px;
+    background: var(--primary-blue);
+    color: white;
+    letter-spacing: 0.02em;
+  }
+
+  .category-label {
     font-size: 0.8rem;
-    font-weight: bold;
+    color: var(--text-muted);
+    font-weight: 500;
   }
-  .category {
-    text-transform: uppercase;
-    color: #666;
-  }
-  h2 {
-    font-size: 1.8rem;
-    margin: 0.5rem 0 1rem;
-    line-height: 1.2;
-    color: var(--ink-black);
-  }
-  .featured h2 {
-    font-size: 2.5rem;
-  }
-  .dropcap {
-    float: left;
-    font-size: 3rem;
-    line-height: 0.8;
-    padding-right: 0.5rem;
-    padding-top: 0.2rem;
-    font-weight: 900;
-    color: var(--accent-red);
-  }
-  .summary {
-    font-size: 1.05rem;
-    color: #333;
-    margin-bottom: 1rem;
-    text-align: justify;
-  }
-  .sources-accordion {
-    font-size: 0.9rem;
-    cursor: pointer;
-  }
-  .sources-accordion summary {
-    list-style: none;
-    font-weight: bold;
-    color: var(--accent-red);
-    text-decoration: underline;
-  }
-  .sources-accordion summary::-webkit-details-marker {
-    display: none;
-  }
-  .sources-content {
-    margin-top: 0.5rem;
-    padding: 1rem;
-    background: #f0f0f0;
-    border-left: 2px solid var(--accent-red);
-  }
-  .sources-content ul {
+
+  .card-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-primary);
     margin: 0;
-    padding-left: 1.2rem;
+    line-height: 1.4;
+  }
+
+  .card-summary {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin: 0;
+    line-height: 1.6;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto;
+    padding-top: 0.5rem;
+  }
+
+  .source-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--primary-blue);
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+  }
+
+  .source-link:hover {
+    opacity: 0.7;
+  }
+
+  .card-tags {
+    display: flex;
+    gap: 0.4rem;
+  }
+
+  .symbol-tag {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--primary-blue);
+    background: var(--primary-blue-light);
+    padding: 0.15rem 0.5rem;
+    border-radius: 4px;
+  }
+
+  @media (max-width: 768px) {
+    .news-card {
+      padding: 1rem;
+    }
+
+    .card-title {
+      font-size: 1rem;
+    }
   }
 </style>

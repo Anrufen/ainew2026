@@ -9,26 +9,41 @@ interface Props {
 }
 
 const { stocks } = Astro.props;
+
+function getSentimentClass(sentiment: string) {
+  if (sentiment.includes('利好')) return 'positive';
+  if (sentiment.includes('利空')) return 'negative';
+  return 'neutral';
+}
+
+function getSentimentLabel(sentiment: string) {
+  if (sentiment.includes('强烈利好')) return '强烈利好';
+  if (sentiment.includes('利好')) return '利好';
+  if (sentiment.includes('利空')) return '偏空';
+  return '中性';
+}
 ---
-<div class="stock-impact">
+<div class="stock-analysis card">
   <table class="stock-table">
     <thead>
       <tr>
-        <th>标的</th>
-        <th>判断</th>
-        <th>核心逻辑</th>
+        <th class="col-ticker">相关企业</th>
+        <th class="col-logic">核心影响点</th>
+        <th class="col-sentiment">情绪向性</th>
       </tr>
     </thead>
     <tbody>
       {stocks.map(s => (
         <tr>
-          <td class="ticker"><strong>{s.ticker}</strong></td>
-          <td class={`sentiment ${s.sentiment.includes('利好') ? 'up' : s.sentiment.includes('利空') ? 'down' : ''}`}>
-            {s.sentiment}
+          <td class="ticker-cell">
+            <span class="ticker-name">{s.ticker}</span>
           </td>
-          <td class="logic-cell">
-            <div class="logic">{s.logic}</div>
-            <div class="details">{s.details}</div>
+          <td class="logic-cell">{s.logic}</td>
+          <td class="sentiment-cell">
+            <span class={`sentiment-badge ${getSentimentClass(s.sentiment)}`}>
+              <span class="sentiment-dot"></span>
+              {getSentimentLabel(s.sentiment)}
+            </span>
           </td>
         </tr>
       ))}
@@ -37,27 +52,125 @@ const { stocks } = Astro.props;
 </div>
 
 <style>
+  .stock-analysis {
+    overflow: hidden;
+  }
+
   .stock-table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
   }
+
   .stock-table th {
     text-align: left;
-    border-bottom: 2px solid var(--ink-black);
-    padding: 0.5rem;
-    text-transform: uppercase;
+    padding: 1rem 1.25rem;
     font-size: 0.8rem;
-  }
-  .stock-table td {
-    padding: 1rem 0.5rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    background: var(--border-light);
     border-bottom: 1px solid var(--border-color);
-    vertical-align: top;
   }
-  .ticker { width: 80px; }
-  .sentiment { width: 100px; font-weight: bold; }
-  .sentiment.up { color: #d00; }
-  .sentiment.down { color: #008000; }
-  .logic-cell .logic { font-weight: 500; margin-bottom: 0.3rem; }
-  .logic-cell .details { font-size: 0.85rem; color: #666; font-style: italic; }
+
+  .col-ticker {
+    width: 160px;
+  }
+
+  .col-sentiment {
+    width: 120px;
+    text-align: right !important;
+  }
+
+  .stock-table td {
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid var(--border-light);
+    vertical-align: middle;
+  }
+
+  .stock-table tr:last-child td {
+    border-bottom: none;
+  }
+
+  .ticker-cell {
+    font-weight: 600;
+  }
+
+  .ticker-name {
+    color: var(--text-primary);
+  }
+
+  .logic-cell {
+    color: var(--text-secondary);
+    line-height: 1.5;
+  }
+
+  .sentiment-cell {
+    text-align: right;
+  }
+
+  .sentiment-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.3rem 0.6rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    border-radius: 100px;
+  }
+
+  .sentiment-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+  }
+
+  .sentiment-badge.positive {
+    background: #ecfdf5;
+    color: var(--success-green);
+  }
+
+  .sentiment-badge.positive .sentiment-dot {
+    background: var(--success-green);
+  }
+
+  .sentiment-badge.negative {
+    background: #fef2f2;
+    color: var(--danger-red);
+  }
+
+  .sentiment-badge.negative .sentiment-dot {
+    background: var(--danger-red);
+  }
+
+  .sentiment-badge.neutral {
+    background: #fffbeb;
+    color: var(--warning-yellow);
+  }
+
+  .sentiment-badge.neutral .sentiment-dot {
+    background: var(--warning-yellow);
+  }
+
+  @media (max-width: 768px) {
+    .stock-table th,
+    .stock-table td {
+      padding: 0.75rem 1rem;
+    }
+
+    .col-ticker {
+      width: 100px;
+    }
+
+    .col-sentiment {
+      width: 90px;
+    }
+
+    .ticker-name {
+      font-size: 0.85rem;
+    }
+
+    .logic-cell {
+      font-size: 0.85rem;
+    }
+  }
 </style>

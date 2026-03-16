@@ -7,22 +7,21 @@ interface Props {
 
 const { highlights } = Astro.props;
 ---
-<div class="magazine-grid">
+<div class="news-grid">
   {highlights.map((h, index) => (
     <NewsCard highlight={h} featured={index === 0} />
   ))}
 </div>
 
 <style>
-  .magazine-grid {
+  .news-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    column-gap: 2.5rem;
-    row-gap: 1rem;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
   }
   
-  @media (max-width: 900px) {
-    .magazine-grid {
+  @media (max-width: 768px) {
+    .news-grid {
       grid-template-columns: 1fr;
     }
   }

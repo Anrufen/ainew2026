@@ -1,51 +1,148 @@
 ---
+const today = new Date();
+const dateStr = today.toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' });
 ---
-<header class="newspaper-header">
-  <div class="top-bar">
-    <span>VOL. MMXXVI ... NO. 075</span>
-    <span class="brand">AI NEW INTELLIGENCE</span>
-    <span>{new Date().toLocaleDateString('zh-CN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</span>
-  </div>
-  <div class="main-title">
-    <h1>AI NEWS PORTAL</h1>
-  </div>
-  <div class="motto">
-    "Decoding the Intelligence Age"
+<header class="header">
+  <div class="header-content">
+    <div class="title-section">
+      <h1 class="main-title">
+        <span class="title-ai">AI</span>
+        <span class="title-daily">每日简报</span>
+      </h1>
+      <div class="subtitle">
+        <svg class="calendar-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+          <line x1="16" y1="2" x2="16" y2="6"></line>
+          <line x1="8" y1="2" x2="8" y2="6"></line>
+          <line x1="3" y1="10" x2="21" y2="10"></line>
+        </svg>
+        <span>{dateStr}</span>
+        <span class="divider">|</span>
+        <span>深度洞察科技前沿</span>
+      </div>
+    </div>
+    <div class="header-actions">
+      <button class="icon-btn" title="AI 助手">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+          <path d="M2 17l10 5 10-5"></path>
+          <path d="M2 12l10 5 10-5"></path>
+        </svg>
+      </button>
+      <button class="icon-btn" title="深色模式">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+      </button>
+      <button class="icon-btn" title="视频模式">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+          <line x1="8" y1="21" x2="16" y2="21"></line>
+          <line x1="12" y1="17" x2="12" y2="21"></line>
+        </svg>
+      </button>
+    </div>
   </div>
 </header>
 
 <style>
-  .newspaper-header {
-    text-align: center;
-    border-bottom: 4px double var(--ink-black);
-    padding-bottom: 1rem;
-    margin-bottom: 2rem;
+  .header {
+    background: var(--bg-card);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem 2rem;
+    margin-bottom: 0.5rem;
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-sm);
   }
-  .top-bar {
+
+  .header-content {
     display: flex;
     justify-content: space-between;
-    font-size: 0.8rem;
-    border-bottom: 1px solid var(--border-color);
-    padding: 0.3rem 0;
-    text-transform: uppercase;
-    font-weight: 500;
+    align-items: center;
   }
-  .brand {
-    font-weight: 900;
+
+  .title-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
   }
-  .main-title h1 {
-    font-size: 4rem;
-    margin: 1rem 0 0.5rem;
-    letter-spacing: -0.02em;
-    text-transform: uppercase;
+
+  .main-title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0;
+    display: flex;
+    align-items: baseline;
+    gap: 0.25rem;
   }
-  .motto {
-    font-style: italic;
-    font-family: var(--font-serif);
-    color: #666;
+
+  .title-ai {
+    background: linear-gradient(135deg, var(--primary-blue) 0%, #00b4d8 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
+
+  .title-daily {
+    color: var(--primary-blue);
+  }
+
+  .subtitle {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+  }
+
+  .calendar-icon {
+    color: var(--text-muted);
+  }
+
+  .divider {
+    color: var(--border-color);
+  }
+
+  .header-actions {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .icon-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    background: var(--bg-card);
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .icon-btn:hover {
+    background: var(--border-light);
+    color: var(--text-primary);
+  }
+
   @media (max-width: 768px) {
-    .main-title h1 { font-size: 2.5rem; }
-    .top-bar span:not(.brand) { display: none; }
+    .header {
+      padding: 1.25rem 1rem;
+    }
+
+    .main-title {
+      font-size: 1.5rem;
+    }
+
+    .subtitle {
+      font-size: 0.8rem;
+      flex-wrap: wrap;
+    }
+
+    .header-actions {
+      display: none;
+    }
   }
 </style>

@@ -7,45 +7,166 @@ interface Props {
 }
 
 const { perspectives } = Astro.props;
+
+// 为不同角色分配图标
+function getRoleIcon(role: string) {
+  if (role.includes('产品')) return 'building';
+  if (role.includes('自媒体')) return 'user';
+  if (role.includes('极客')) return 'settings';
+  return 'star';
+}
+
+function getRoleLabel(role: string) {
+  if (role.includes('产品')) return { prefix: 'B端', title: '商业视角' };
+  if (role.includes('自媒体')) return { prefix: 'C端', title: '个人用户' };
+  if (role.includes('极客')) return { prefix: 'G端', title: '治理监管' };
+  return { prefix: '', title: role };
+}
 ---
 <div class="perspectives-grid">
-  {perspectives.map(p => (
-    <div class="perspective-box">
-      <h3 class="serif">{p.role} 视角</h3>
-      <ul>
-        {p.items.map(item => (
-          <li>{item}</li>
-        ))}
-      </ul>
-    </div>
-  ))}
+  {perspectives.map((p, index) => {
+    const label = getRoleLabel(p.role);
+    return (
+      <div class="perspective-card card">
+        <div class="card-header">
+          <div class="role-icon">
+            {getRoleIcon(p.role) === 'building' && (
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect>
+                <path d="M9 22v-4h6v4"></path>
+                <path d="M8 6h.01"></path>
+                <path d="M16 6h.01"></path>
+                <path d="M12 6h.01"></path>
+                <path d="M12 10h.01"></path>
+                <path d="M12 14h.01"></path>
+                <path d="M16 10h.01"></path>
+                <path d="M16 14h.01"></path>
+                <path d="M8 10h.01"></path>
+                <path d="M8 14h.01"></path>
+              </svg>
+            )}
+            {getRoleIcon(p.role) === 'user' && (
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+            )}
+            {getRoleIcon(p.role) === 'settings' && (
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 2a3 3 0 0 0-3 3v4a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path>
+                <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                <line x1="12" y1="19" x2="12" y2="22"></line>
+              </svg>
+            )}
+          </div>
+          <div class="role-info">
+            <span class="role-prefix">{label.prefix}</span>
+            <span class="role-title">{label.title}</span>
+          </div>
+        </div>
+        <ul class="perspective-list">
+          {p.items.slice(0, 2).map(item => {
+            // 提取【】中的标题
+            const match = item.match(/【(.+?)】/);
+            const title = match ? match[1] : '';
+            const content = item.replace(/【.+?】/, '').trim();
+            return (
+              <li class="perspective-item">
+                {title && <span class="item-bullet"></span>}
+                <span class="item-text">{title || content}</span>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+    );
+  })}
 </div>
 
 <style>
   .perspectives-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
   }
-  .perspective-box {
-    background: #fff;
-    padding: 1.5rem;
-    border: 1px solid var(--border-color);
-    box-shadow: 4px 4px 0 #eee;
+
+  .perspective-card {
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
   }
-  .perspective-box h3 {
-    margin-top: 0;
-    border-bottom: 2px solid var(--accent-red);
-    display: inline-block;
-    padding-bottom: 0.2rem;
-    margin-bottom: 1rem;
+
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
   }
-  ul {
-    margin: 0;
-    padding-left: 1.2rem;
+
+  .role-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius-sm);
+    background: var(--primary-blue-light);
+    color: var(--primary-blue);
   }
-  li {
-    margin-bottom: 0.8rem;
+
+  .role-info {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .role-prefix {
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--primary-blue);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .role-title {
     font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  .perspective-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .perspective-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+  }
+
+  .item-bullet {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--primary-blue);
+    flex-shrink: 0;
+    margin-top: 0.45rem;
+  }
+
+  .item-text {
+    flex: 1;
+  }
+
+  @media (max-width: 900px) {
+    .perspectives-grid {
+      grid-template-columns: 1fr;
+    }
   }
 </style>

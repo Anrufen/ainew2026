@@ -1,0 +1,118 @@
+---
+interface ContentIdea {
+  topic: string;
+  channels: {
+    wechat?: string;
+    video?: string;
+    article?: string;
+  };
+}
+
+interface Props {
+  ideas: ContentIdea[];
+}
+
+const { ideas } = Astro.props;
+---
+<div class="ideas-grid">
+  {ideas.slice(0, 2).map((idea, index) => (
+    <div class={`idea-card card ${index === 0 ? 'featured' : ''}`}>
+      <div class="idea-header">
+        <span class={`idea-badge ${index === 0 ? 'primary' : 'secondary'}`}>
+          {index === 0 ? '推荐选题' : '深度解析'}
+        </span>
+        <div class="idea-icon">
+          {index === 0 ? (
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+            </svg>
+          ) : (
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+            </svg>
+          )}
+        </div>
+      </div>
+      <h4 class="idea-title">{idea.topic}</h4>
+      <p class="idea-desc">
+        {idea.channels.wechat?.split('\n')[0].replace('【备选标题】', '').slice(0, 80)}...
+      </p>
+    </div>
+  ))}
+</div>
+
+<style>
+  .ideas-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
+  .idea-card {
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .idea-card.featured {
+    border-color: var(--primary-blue);
+    border-width: 2px;
+  }
+
+  .idea-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  .idea-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.2rem 0.6rem;
+    font-size: 0.7rem;
+    font-weight: 600;
+    border-radius: 4px;
+  }
+
+  .idea-badge.primary {
+    background: var(--primary-blue);
+    color: white;
+  }
+
+  .idea-badge.secondary {
+    background: var(--border-light);
+    color: var(--text-secondary);
+  }
+
+  .idea-icon {
+    color: var(--text-muted);
+  }
+
+  .idea-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+    line-height: 1.4;
+  }
+
+  .idea-card.featured .idea-title {
+    color: var(--primary-blue);
+  }
+
+  .idea-desc {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  @media (max-width: 768px) {
+    .ideas-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

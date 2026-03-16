@@ -33,7 +33,7 @@ function getSentimentClass(sentiment: string) {
         <tr class="hover:bg-white/5 transition-colors">
           <td class="px-8 py-6 font-black text-white">{s.ticker}</td>
           <td class="px-8 py-6">
-            <span class={`px-3 py-1 rounded-full text-xs font-bold border ${getSentimentClass(s.sentiment)}`}>
+            <span class={`px-3 py-1 rounded-full text-[10px] font-bold border whitespace-nowrap inline-block ${getSentimentClass(s.sentiment)}`}>
               {s.sentiment}
             </span>
           </td>

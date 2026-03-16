@@ -10,9 +10,9 @@ interface ScanGroup {
 }
 ---
 
-<div class="grid grid-cols-2 gap-6">
+<div class="flex flex-wrap gap-6">
   {scan.map((item: ScanGroup) => (
-    <div class="card-dark p-6">
+    <div class="card-dark p-6 flex-grow basis-[calc(50%-12px)] min-w-[400px]">
       <div class="flex justify-between items-center mb-4">
         <h4 class="font-bold text-white">{item.group}</h4>
         <span class="text-zinc-500 text-[10px] uppercase font-bold tracking-widest">{item.sources.length} 来源</span>

@@ -7,45 +7,31 @@ interface Props {
 }
 
 const { perspectives } = Astro.props;
+
+const roleIcons: Record<string, string> = {
+  'AI 产品经理': '📊',
+  '自媒体人': '📱',
+  '科技极客': '🛠️'
+};
 ---
-<div class="perspectives-grid">
+
+<div class="grid grid-cols-3 gap-6">
   {perspectives.map(p => (
-    <div class="perspective-box">
-      <h3 class="serif">{p.role} 视角</h3>
-      <ul>
+    <div class="card-dark p-8">
+      <div class="flex items-center gap-4 mb-8">
+        <div class="w-10 h-10 bg-zinc-800 rounded-lg flex items-center justify-center">
+          <span class="text-xl">{roleIcons[p.role] || '💡'}</span>
+        </div>
+        <h4 class="text-white font-bold">{p.role}</h4>
+      </div>
+      <ul class="space-y-6">
         {p.items.map(item => (
-          <li>{item}</li>
+          <li class="flex gap-3 text-sm text-zinc-400 leading-relaxed">
+            <span class="text-blue-500 mt-1.5">•</span>
+            <span>{item}</span>
+          </li>
         ))}
       </ul>
     </div>
   ))}
 </div>
-
-<style>
-  .perspectives-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
-  }
-  .perspective-box {
-    background: #fff;
-    padding: 1.5rem;
-    border: 1px solid var(--border-color);
-    box-shadow: 4px 4px 0 #eee;
-  }
-  .perspective-box h3 {
-    margin-top: 0;
-    border-bottom: 2px solid var(--accent-red);
-    display: inline-block;
-    padding-bottom: 0.2rem;
-    margin-bottom: 1rem;
-  }
-  ul {
-    margin: 0;
-    padding-left: 1.2rem;
-  }
-  li {
-    margin-bottom: 0.8rem;
-    font-size: 0.95rem;
-  }
-</style>

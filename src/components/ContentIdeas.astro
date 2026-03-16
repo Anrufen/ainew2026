@@ -1,0 +1,44 @@
+---
+interface Props {
+  ideas: {
+    topic: string;
+    channels: {
+      wechat: string;
+      video: string;
+      article: string;
+    };
+  }[];
+}
+
+const { ideas } = Astro.props;
+---
+
+<div class="grid grid-cols-3 gap-6">
+  {ideas.map(idea => (
+    <div class="card-dark p-8 flex flex-col gap-6">
+      <h3 class="text-white font-bold text-lg">{idea.topic}</h3>
+      <div class="space-y-6">
+        <div class="bg-zinc-900/50 p-4 rounded-lg">
+          <div class="flex items-center gap-2 text-blue-400 text-xs font-bold mb-3 uppercase tracking-wider">
+            <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9v-2h2v2zm0-4H9V7h2v5z"></path></svg> 公众号
+          </div>
+          <p class="text-zinc-400 text-xs leading-relaxed">{idea.channels.wechat}</p>
+        </div>
+        
+        <div class="bg-zinc-900/50 p-4 rounded-lg">
+          <div class="flex items-center gap-2 text-blue-400 text-xs font-bold mb-3 uppercase tracking-wider">
+            <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24"><path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"></path></svg> 短视频
+          </div>
+          <p class="text-zinc-400 text-xs leading-relaxed">{idea.channels.video}</p>
+        </div>
+        
+        <div class="bg-zinc-900/50 p-4 rounded-lg">
+          <div class="flex items-center gap-2 text-blue-400 text-xs font-bold mb-3 uppercase tracking-wider">
+            <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"></path></svg> 深度文章
+          </div>
+          <p class="text-zinc-400 text-xs leading-relaxed">{idea.channels.article}</p>
+        </div>
+      </div>
+    </div>
+  ))}
+</div>

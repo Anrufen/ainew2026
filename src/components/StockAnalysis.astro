@@ -9,55 +9,45 @@ interface Props {
 }
 
 const { stocks } = Astro.props;
+
+function getSentimentClass(sentiment: string) {
+  if (sentiment.includes('利好')) return 'bg-green-900/30 text-green-400 border-green-800/50';
+  if (sentiment.includes('中性偏多')) return 'bg-emerald-900/30 text-emerald-400 border-emerald-800/50';
+  if (sentiment.includes('利空')) return 'bg-red-900/30 text-red-400 border-red-800/50';
+  return 'bg-zinc-800 text-zinc-400 border-zinc-700/50';
+}
 ---
-<div class="stock-impact">
-  <table class="stock-table">
-    <thead>
+
+<div class="card-dark overflow-hidden">
+  <table class="w-full text-left">
+    <thead class="bg-zinc-900/50 border-b border-zinc-800">
       <tr>
-        <th>标的</th>
-        <th>判断</th>
-        <th>核心逻辑</th>
+        <th class="px-8 py-4 text-xs font-bold text-zinc-500 uppercase tracking-wider">股票代码</th>
+        <th class="px-8 py-4 text-xs font-bold text-zinc-500 uppercase tracking-wider">市场情绪</th>
+        <th class="px-8 py-4 text-xs font-bold text-zinc-500 uppercase tracking-wider">投资逻辑</th>
+        <th class="px-8 py-4"></th>
       </tr>
     </thead>
-    <tbody>
+    <tbody class="divide-y divide-zinc-800">
       {stocks.map(s => (
-        <tr>
-          <td class="ticker"><strong>{s.ticker}</strong></td>
-          <td class={`sentiment ${s.sentiment.includes('利好') ? 'up' : s.sentiment.includes('利空') ? 'down' : ''}`}>
-            {s.sentiment}
+        <tr class="hover:bg-white/5 transition-colors">
+          <td class="px-8 py-6 font-black text-white">{s.ticker}</td>
+          <td class="px-8 py-6">
+            <span class={`px-3 py-1 rounded-full text-xs font-bold border ${getSentimentClass(s.sentiment)}`}>
+              {s.sentiment}
+            </span>
           </td>
-          <td class="logic-cell">
-            <div class="logic">{s.logic}</div>
-            <div class="details">{s.details}</div>
+          <td class="px-8 py-6">
+            <p class="text-zinc-300 text-sm font-medium mb-1">{s.logic}</p>
+            <p class="text-zinc-500 text-xs leading-relaxed">{s.details}</p>
+          </td>
+          <td class="px-8 py-6 text-zinc-600">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path d="M9 5l7 7-7 7"></path>
+            </svg>
           </td>
         </tr>
       ))}
     </tbody>
   </table>
 </div>
-
-<style>
-  .stock-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 0.95rem;
-  }
-  .stock-table th {
-    text-align: left;
-    border-bottom: 2px solid var(--ink-black);
-    padding: 0.5rem;
-    text-transform: uppercase;
-    font-size: 0.8rem;
-  }
-  .stock-table td {
-    padding: 1rem 0.5rem;
-    border-bottom: 1px solid var(--border-color);
-    vertical-align: top;
-  }
-  .ticker { width: 80px; }
-  .sentiment { width: 100px; font-weight: bold; }
-  .sentiment.up { color: #d00; }
-  .sentiment.down { color: #008000; }
-  .logic-cell .logic { font-weight: 500; margin-bottom: 0.3rem; }
-  .logic-cell .details { font-size: 0.85rem; color: #666; font-style: italic; }
-</style>

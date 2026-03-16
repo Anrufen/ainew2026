@@ -8,103 +8,51 @@ interface Props {
     title: string;
     summary: string;
     sources: string[];
+    hotness?: number;
   };
   featured?: boolean;
 }
 
 const { highlight, featured = false } = Astro.props;
----
-<article class={`news-card ${featured ? 'featured' : ''}`}>
-  <div class="card-meta">
-    <span class="badge">{highlight.tag}</span>
-    <span class="category">{highlight.category}</span>
-    {highlight.symbols.map(s => <span class="symbol-tag">{s}</span>)}
-  </div>
-  
-  <h2 class="serif">
-    <span class="dropcap">{highlight.id}</span>
-    {highlight.title}
-  </h2>
-  
-  <p class="summary">{highlight.summary}</p>
-  
-  <details class="sources-accordion">
-    <summary>深度分析 / 来源 ↗</summary>
-    <div class="sources-content">
-      <ul>
-        {highlight.sources.map(s => <li>{s}</li>)}
-      </ul>
-    </div>
-  </details>
-</article>
+const hotness = highlight.hotness || 80;
+const goldDots = Math.min(10, Math.floor(hotness / 10));
+const grayDots = 10 - goldDots;
 
-<style>
-  .news-card {
-    padding-bottom: 1.5rem;
-    margin-bottom: 1.5rem;
-    border-bottom: 1px solid var(--border-color);
-  }
-  .news-card.featured {
-    grid-column: span 2;
-    padding-bottom: 2rem;
-  }
-  .card-meta {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin-bottom: 0.8rem;
-    font-size: 0.8rem;
-    font-weight: bold;
-  }
-  .category {
-    text-transform: uppercase;
-    color: #666;
-  }
-  h2 {
-    font-size: 1.8rem;
-    margin: 0.5rem 0 1rem;
-    line-height: 1.2;
-    color: var(--ink-black);
-  }
-  .featured h2 {
-    font-size: 2.5rem;
-  }
-  .dropcap {
-    float: left;
-    font-size: 3rem;
-    line-height: 0.8;
-    padding-right: 0.5rem;
-    padding-top: 0.2rem;
-    font-weight: 900;
-    color: var(--accent-red);
-  }
-  .summary {
-    font-size: 1.05rem;
-    color: #333;
-    margin-bottom: 1rem;
-    text-align: justify;
-  }
-  .sources-accordion {
-    font-size: 0.9rem;
-    cursor: pointer;
-  }
-  .sources-accordion summary {
-    list-style: none;
-    font-weight: bold;
-    color: var(--accent-red);
-    text-decoration: underline;
-  }
-  .sources-accordion summary::-webkit-details-marker {
-    display: none;
-  }
-  .sources-content {
-    margin-top: 0.5rem;
-    padding: 1rem;
-    background: #f0f0f0;
-    border-left: 2px solid var(--accent-red);
-  }
-  .sources-content ul {
-    margin: 0;
-    padding-left: 1.2rem;
-  }
-</style>
+const hotTagClass = highlight.tag === "最热" ? "bg-red-900/40 text-red-400" : "bg-orange-900/40 text-orange-400";
+const containerClass = featured ? "card-dark p-8 mb-6" : "card-dark p-6";
+const titleClass = featured ? "text-2xl font-bold text-white mb-4" : "text-xl font-bold text-white mb-3";
+---
+
+<a href="/2026-03-15/22-50" class="block hover:no-underline group">
+  <div class={`${containerClass} transition-all group-hover:border-blue-500/50 group-hover:bg-zinc-900/40`}>
+    <div class="flex justify-between mb-4">
+      <div class="flex gap-2 text-xs">
+        <span class={`${hotTagClass} text-[10px] px-2 py-0.5 rounded uppercase font-bold`}>{highlight.tag}</span>
+        <span class="bg-zinc-800 text-zinc-400 text-[10px] px-2 py-0.5 rounded uppercase font-bold">{highlight.category}</span>
+      </div>
+      <div class="flex gap-2">
+        {highlight.symbols.map(s => <span class="text-green-500 font-mono text-xs">{s}</span>)}
+      </div>
+    </div>
+    
+    <h3 class={titleClass}>{highlight.title}</h3>
+    <p class="text-zinc-400 leading-relaxed mb-6 text-sm">{highlight.summary}</p>
+    
+    <div class="flex justify-between items-center">
+      <div class="flex gap-4 text-[10px] font-bold text-zinc-500 uppercase">
+        {highlight.sources.map(s => <span>{s}</span>)}
+      </div>
+      <div class="flex items-center gap-2">
+        <div class="flex gap-0.5">
+          {Array.from({ length: goldDots }).map(() => (
+            <span class="w-1.5 h-1.5 rounded-full bg-gold"></span>
+          ))}
+          {Array.from({ length: grayDots }).map(() => (
+            <span class="w-1.5 h-1.5 rounded-full bg-zinc-700"></span>
+          ))}
+        </div>
+        <span class="text-zinc-500 text-xs">{hotness}/100</span>
+      </div>
+    </div>
+  </div>
+</a>

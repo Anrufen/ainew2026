@@ -1,65 +1,39 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap');
+@import "tailwindcss";
+
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
 
 :root {
-  --font-serif: "Playfair Display", serif;
-  --font-sans: "Source Sans 3", sans-serif;
-  --paper-bg: #fcfaf7;
-  --ink-black: #1a1a1a;
-  --accent-red: #c00;
-  --border-color: #ddd;
+  --bg-dark: #0a0a0a;
+  --bg-card: #141417;
+  --border-color: #262626;
+  --text-main: #e5e5e5;
+  --text-muted: #9ca3af;
+  --gold: #d4af37;
+  --blue-accent: #3b82f6;
 }
 
 body {
-  background-color: var(--paper-bg);
-  color: var(--ink-black);
-  font-family: var(--font-sans);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background-color: var(--bg-dark);
+  color: var(--text-main);
   margin: 0;
-  padding: 0;
-  line-height: 1.6;
 }
 
-h1, h2, h3, .serif {
-  font-family: var(--font-serif);
-  font-weight: 700;
+.card-dark {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
 }
 
-.newspaper-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem;
-  border-left: 1px solid var(--border-color);
-  border-right: 1px solid var(--border-color);
-  min-height: 100vh;
-}
+.text-gold { color: var(--gold); }
+.bg-gold { background-color: var(--gold); }
+.text-blue-accent { color: var(--blue-accent); }
+.border-blue-accent { border-color: var(--blue-accent); }
 
-.section-title {
-  border-top: 3px solid var(--ink-black);
-  border-bottom: 1px solid var(--ink-black);
-  padding: 0.5rem 0;
-  margin: 2rem 0 1.5rem;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  font-size: 1.2rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
+/* Custom utilities for easier conversion */
+.font-black { font-weight: 900; }
+.tracking-tight { letter-spacing: -0.025em; }
+.tracking-widest { letter-spacing: 0.1em; }
 
-/* Common UI elements */
-.badge {
-  background: var(--accent-red);
-  color: white;
-  padding: 0.2rem 0.5rem;
-  font-size: 0.7rem;
-  text-transform: uppercase;
-  font-weight: bold;
-}
-
-.symbol-tag {
-  background: #eee;
-  padding: 0.1rem 0.3rem;
-  font-size: 0.8rem;
-  border-radius: 2px;
-  margin-right: 0.3rem;
-  font-family: monospace;
-}

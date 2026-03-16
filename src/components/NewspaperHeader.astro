@@ -1,51 +1,32 @@
 ---
----
-<header class="newspaper-header">
-  <div class="top-bar">
-    <span>VOL. MMXXVI ... NO. 075</span>
-    <span class="brand">AI NEW INTELLIGENCE</span>
-    <span>{new Date().toLocaleDateString('zh-CN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</span>
-  </div>
-  <div class="main-title">
-    <h1>AI NEWS PORTAL</h1>
-  </div>
-  <div class="motto">
-    "Decoding the Intelligence Age"
-  </div>
-</header>
+interface Props {
+  version?: string;
+  dateStr?: string;
+}
 
-<style>
-  .newspaper-header {
-    text-align: center;
-    border-bottom: 4px double var(--ink-black);
-    padding-bottom: 1rem;
-    margin-bottom: 2rem;
-  }
-  .top-bar {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.8rem;
-    border-bottom: 1px solid var(--border-color);
-    padding: 0.3rem 0;
-    text-transform: uppercase;
-    font-weight: 500;
-  }
-  .brand {
-    font-weight: 900;
-  }
-  .main-title h1 {
-    font-size: 4rem;
-    margin: 1rem 0 0.5rem;
-    letter-spacing: -0.02em;
-    text-transform: uppercase;
-  }
-  .motto {
-    font-style: italic;
-    font-family: var(--font-serif);
-    color: #666;
-  }
-  @media (max-width: 768px) {
-    .main-title h1 { font-size: 2.5rem; }
-    .top-bar span:not(.brand) { display: none; }
-  }
-</style>
+const { 
+  version = "v08:00", 
+  dateStr = "2026年3月16日 星期一" 
+} = Astro.props;
+---
+<header class="max-w-7xl mx-auto px-6 pt-12 pb-8">
+  <div class="flex justify-between items-start">
+    <div data-purpose="logo-area">
+      <div class="inline-flex items-center px-3 py-1 rounded-full bg-blue-900/30 border border-blue-500/50 mb-6">
+        <span class="text-blue-400 text-xs font-bold tracking-widest flex items-center">
+          <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+          </svg>
+          AI DAILY BRIEFING
+        </span>
+      </div>
+      <h1 class="text-6xl font-black text-white mb-4 tracking-tight">AI 科技日报</h1>
+      <p class="text-gray-400 text-xl">洞察前沿科技动态，把握市场投资先机</p>
+    </div>
+    <div class="text-right" data-purpose="date-info">
+      <p class="text-gray-500 text-sm">{dateStr}</p>
+      <div class="inline-block mt-2 px-3 py-1 bg-zinc-800 rounded text-gray-400 text-xs font-mono">{version}</div>
+    </div>
+  </div>
+  <div class="h-px w-full bg-zinc-800 mt-12"></div>
+</header>

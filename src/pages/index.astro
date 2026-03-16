@@ -5,6 +5,7 @@ import NewsGrid from '../components/NewsGrid.astro';
 import StockAnalysis from '../components/StockAnalysis.astro';
 import Perspectives from '../components/Perspectives.astro';
 import QuickScan from '../components/QuickScan.astro';
+import ContentIdeas from '../components/ContentIdeas.astro';
 import { getLatestNews, getNewsByVersion } from '../lib/kv';
 
 // 获取 Cloudflare 环境环境变量
@@ -17,46 +18,89 @@ const newsData = await getLatestNews(env);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI New 2026 | 深度新闻情报</title>
+    <title>AI 科技日报 - AI Daily Briefing</title>
 </head>
-<body>
-    <div class="newspaper-container">
-        <NewspaperHeader />
+<body class="antialiased pb-20">
+    <div class="max-w-7xl mx-auto">
+        <NewspaperHeader version={newsData.version} />
         
-        <main>
-            <div class="section-title">
-                <span>热点聚类 · Top {newsData.highlights.length}</span>
-                <span class="date-version">Version: {newsData.version}</span>
-            </div>
-            
-            <NewsGrid highlights={newsData.highlights} />
-            
-            <div class="section-title">
-                <span>股票影响分析</span>
-                <span>Market Impact</span>
-            </div>
-            
-            <StockAnalysis stocks={newsData.stock_analysis} />
-            
-            <div class="section-title">
-                <span>多维视角回顾</span>
-                <span>Expert Perspectives</span>
-            </div>
-            
-            <Perspectives perspectives={newsData.perspectives} />
+        <main class="px-6">
+            <!-- Top Highlights -->
+            <section class="mb-16">
+                <div class="flex justify-between items-center mb-8">
+                    <div class="flex items-center gap-3">
+                        <div class="p-2 bg-blue-600/20 rounded-lg">
+                            <svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+                        </div>
+                        <h2 class="text-2xl font-bold text-white">热点聚焦</h2>
+                    </div>
+                    <span class="text-zinc-500 text-sm tracking-widest font-bold">TOP HIGHLIGHTS</span>
+                </div>
+                <NewsGrid highlights={newsData.highlights} />
+            </section>
 
+            <!-- Quick Scan -->
             {newsData.quick_scan && (
-                <>
-                    <div class="section-title">
-                        <span>极速快报</span>
-                        <span>Quick Scan</span>
+                <section class="mb-16">
+                    <div class="flex justify-between items-center mb-8">
+                        <div class="flex items-center gap-3">
+                            <div class="p-2 bg-blue-600/20 rounded-lg">
+                                <svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+                            </div>
+                            <h2 class="text-2xl font-bold text-white">快速扫描</h2>
+                        </div>
+                        <span class="text-zinc-500 text-sm tracking-widest font-bold">QUICK SCAN</span>
                     </div>
                     <QuickScan scan={newsData.quick_scan} />
-                </>
+                </section>
+            )}
+
+            <!-- Market Impact -->
+            <section class="mb-16">
+                <div class="flex justify-between items-center mb-8">
+                    <div class="flex items-center gap-3">
+                        <div class="p-2 bg-green-600/20 rounded-lg">
+                            <svg class="w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+                        </div>
+                        <h2 class="text-2xl font-bold text-white">股票影响分析</h2>
+                    </div>
+                    <span class="text-zinc-500 text-sm tracking-widest font-bold">MARKET IMPACT</span>
+                </div>
+                <StockAnalysis stocks={newsData.stock_analysis} />
+            </section>
+
+            <!-- Expert Perspectives -->
+            <section class="mb-16">
+                <div class="flex justify-between items-center mb-8">
+                    <div class="flex items-center gap-3">
+                        <div class="p-2 bg-purple-600/20 rounded-lg">
+                            <svg class="w-6 h-6 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+                        </div>
+                        <h2 class="text-2xl font-bold text-white">多维视角</h2>
+                    </div>
+                    <span class="text-zinc-500 text-sm tracking-widest font-bold">EXPERT PERSPECTIVES</span>
+                </div>
+                <Perspectives perspectives={newsData.perspectives} />
+            </section>
+
+            <!-- Content Ideas -->
+            {newsData.content_ideas && (
+                <section class="mb-16">
+                    <div class="flex justify-between items-center mb-8">
+                        <div class="flex items-center gap-3">
+                            <div class="p-2 bg-yellow-600/20 rounded-lg">
+                                <svg class="w-6 h-6 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+                            </div>
+                            <h2 class="text-2xl font-bold text-white">内容选题灵感</h2>
+                        </div>
+                        <span class="text-zinc-500 text-sm tracking-widest font-bold">CONTENT IDEAS</span>
+                    </div>
+                    <ContentIdeas ideas={newsData.content_ideas} />
+                </section>
             )}
         </main>
         
-        <footer style="margin-top: 4rem; text-align: center; border-top: 1px solid var(--border-color); padding-top: 2rem; color: #888; font-size: 0.8rem;">
+        <footer class="mt-20 text-center border-t border-zinc-800 pt-8 pb-12 text-zinc-500 text-xs px-6">
             © 2026 AI NEW INTELLIGENCE. 本页内容由智能工作流自动生成，不构成投资建议。
         </footer>
     </div>

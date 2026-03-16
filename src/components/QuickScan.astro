@@ -1,62 +1,29 @@
 ---
 const { scan } = Astro.props;
----
-<div class="quick-scan-container">
-    {scan.map((group) => (
-        <div class="scan-item">
-            <div class="scan-header">
-                <span class="scan-group">{group.group}</span>
-                <div class="scan-sources">
-                    {group.sources.map(s => <span class="source-tag">{s}</span>)}
-                </div>
-            </div>
-            <p class="scan-content">{group.summary}</p>
-            {group.note && <p class="scan-note">💡 {group.note}</p>}
-        </div>
-    ))}
-</div>
 
-<style>
-    .quick-scan-container {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-        gap: 1.5rem;
-        padding-bottom: 2rem;
-    }
-    .scan-item {
-        border-bottom: 1px solid var(--border-color);
-        padding-bottom: 1rem;
-    }
-    .scan-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 0.5rem;
-    }
-    .scan-group {
-        font-weight: 700;
-        font-family: 'Playfair Display', serif;
-        font-size: 1.1rem;
-    }
-    .source-tag {
-        font-size: 0.7rem;
-        background: #f0f0f0;
-        padding: 2px 6px;
-        margin-left: 4px;
-        border-radius: 2px;
-        color: #666;
-    }
-    .scan-content {
-        font-size: 0.95rem;
-        line-height: 1.5;
-        margin-bottom: 0.5rem;
-    }
-    .scan-note {
-        font-size: 0.85rem;
-        color: #555;
-        font-style: italic;
-        background: #f9f9f9;
-        padding: 0.5rem;
-        border-left: 3px solid var(--accent-color);
-    }
-</style>
+interface ScanGroup {
+  group: string;
+  summary: string;
+  sources: string[];
+  note?: string;
+  type?: 'science' | 'policy' | 'market' | 'sport' | 'game' | 'product';
+}
+---
+
+<div class="grid grid-cols-2 gap-6">
+  {scan.map((item: ScanGroup) => (
+    <div class="card-dark p-6">
+      <div class="flex justify-between items-center mb-4">
+        <h4 class="font-bold text-white">{item.group}</h4>
+        <span class="text-zinc-500 text-[10px] uppercase font-bold tracking-widest">{item.sources.length} 来源</span>
+      </div>
+      <p class="text-zinc-400 text-sm mb-4 leading-relaxed">{item.summary}</p>
+      
+      {item.note && (
+        <div class={`pl-3 border-l-2 ${item.type === 'science' || item.type === 'policy' || item.type === 'market' || item.type === 'product' ? 'border-blue-500' : 'border-zinc-700'} py-1`}>
+          <p class="text-zinc-500 text-xs">{item.note}</p>
+        </div>
+      )}
+    </div>
+  ))}
+</div>

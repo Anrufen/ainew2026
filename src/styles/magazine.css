@@ -5,18 +5,86 @@
 
 
 :root {
-  --bg-dark: #0a0a0a;
+  /* Surface Colors */
+  --bg-main: #fcfcfd;
+  --bg-card: #ffffff;
+  --bg-subtle: #f8fafc;
+  --border-color: rgba(15, 23, 42, 0.05); /* Even subtler 5% */
+  
+  /* Typography */
+  --text-main: #0f172a;
+  --text-muted: #475569;
+  
+  /* Accents & Branding */
+  --gold: #9a6d00;
+  --gold-rgb: 154, 109, 0;
+  --blue-accent: #2563eb;
+  --green-accent: #16a34a;
+  --red-accent: #dc2626;
+  --red-rgb: 220, 38, 38;
+  --purple-accent: #9333ea;
+  --yellow-accent: #ca8a04;
+
+  /* Sentiment Colors (Light) */
+  --sentiment-pos-bg: #f0fdf4;
+  --sentiment-pos-text: #166534;
+  --sentiment-pos-border: #bbf7d0;
+  
+  --sentiment-neg-bg: #fef2f2;
+  --sentiment-neg-text: #991b1b;
+  --sentiment-neg-border: #fecaca;
+  
+  --sentiment-neu-bg: #f8fafc;
+  --sentiment-neu-text: #475569;
+  --sentiment-neu-border: #e2e8f0;
+
+  --card-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+}
+
+[data-theme='dark'] {
+  /* Surface Colors */
+  --bg-main: #0a0a0a;
   --bg-card: #141417;
-  --border-color: #262626;
+  --bg-subtle: #1e1e22;
+  --border-color: rgba(255, 255, 255, 0.04); /* Even subtler 4% */
+  
+  /* Typography */
   --text-main: #e5e5e5;
   --text-muted: #9ca3af;
+  
+  /* Accents & Branding */
   --gold: #d4af37;
+  --gold-rgb: 212, 175, 55;
   --blue-accent: #3b82f6;
+  --green-accent: #22c55e;
+  --red-accent: #ef4444;
+  --red-rgb: 239, 68, 68;
+  --purple-accent: #a855f7;
+  --yellow-accent: #eab308;
+
+  /* Sentiment Colors (Dark) */
+  --sentiment-pos-bg: rgba(22, 101, 52, 0.2);
+  --sentiment-pos-text: #4ade80;
+  --sentiment-pos-border: rgba(34, 197, 94, 0.3);
+  
+  --sentiment-neg-bg: rgba(153, 27, 27, 0.2);
+  --sentiment-neg-text: #f87171;
+  --sentiment-neg-border: rgba(239, 68, 68, 0.3);
+  
+  --sentiment-neu-bg: rgba(71, 85, 105, 0.2);
+  --sentiment-neu-text: #94a3b8;
+  --sentiment-neu-border: rgba(148, 163, 184, 0.3);
+  
+  --card-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.5);
+}
+
+* {
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
 }
 
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  background-color: var(--bg-dark);
+  background-color: var(--bg-main);
   color: var(--text-main);
   margin: 0;
 }
@@ -25,15 +93,63 @@ body {
   background-color: var(--bg-card);
   border: 1px solid var(--border-color);
   border-radius: 12px;
+  box-shadow: var(--card-shadow);
 }
 
+/* --- Semantic Utility Classes --- */
+
+/* Surfaces */
+.bg-main { background-color: var(--bg-main); }
+.bg-card { background-color: var(--bg-card); }
+.bg-subtle { background-color: var(--bg-subtle); }
+
+/* Robust Border & Divider System */
+.border-color, 
+.border-color > *,
+.border-color.divide-y > :not([hidden]) ~ :not([hidden]),
+.border-color.divide-x > :not([hidden]) ~ :not([hidden]) { 
+  border-color: var(--border-color) !important; 
+}
+
+/* Typography */
+.text-main { color: var(--text-main); }
+.text-muted { color: var(--text-muted); }
+
+/* Sentiment Badges */
+.sentiment-positive {
+  background-color: var(--sentiment-pos-bg);
+  color: var(--sentiment-pos-text);
+  border-color: var(--sentiment-pos-border);
+}
+.sentiment-negative {
+  background-color: var(--sentiment-neg-bg);
+  color: var(--sentiment-neg-text);
+  border-color: var(--sentiment-neg-border);
+}
+.sentiment-neutral {
+  background-color: var(--sentiment-neu-bg);
+  color: var(--sentiment-neu-text);
+  border-color: var(--sentiment-neu-border);
+}
+
+.badge-blue {
+  background-color: rgba(37, 99, 235, 0.05); 
+  border-color: rgba(37, 99, 235, 0.15); 
+}
+
+[data-theme='dark'] .badge-blue {
+  background-color: rgba(59, 130, 246, 0.08);
+  border-color: rgba(59, 130, 246, 0.2);
+}
+
+/* Icons & Accents */
 .text-gold { color: var(--gold); }
 .bg-gold { background-color: var(--gold); }
-.text-blue-accent { color: var(--blue-accent); }
-.border-blue-accent { border-color: var(--blue-accent); }
-
-/* Custom utilities for easier conversion */
-.font-black { font-weight: 900; }
-.tracking-tight { letter-spacing: -0.025em; }
-.tracking-widest { letter-spacing: 0.1em; }
+.bg-red { background-color: var(--red-accent); }
+.text-blue { color: var(--blue-accent); }
+.bg-blue-subtle { background-color: var(--sentiment-neu-bg); } /* Reusing for light blue backgrounds */
+.text-green { color: var(--green-accent); }
+.text-red { color: var(--red-accent); }
+.text-purple { color: var(--purple-accent); }
+.text-yellow { color: var(--yellow-accent); }
 

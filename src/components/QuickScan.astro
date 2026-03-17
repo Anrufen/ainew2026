@@ -10,18 +10,18 @@ interface ScanGroup {
 }
 ---
 
-<div class="flex flex-wrap gap-6">
+<div class="flex flex-wrap gap-4 md:gap-6">
   {scan.map((item: ScanGroup) => (
-    <div class="card-dark p-6 flex-grow basis-[calc(50%-12px)] min-w-[400px]">
-      <div class="flex justify-between items-center mb-4">
-        <h4 class="font-bold text-white">{item.group}</h4>
-        <span class="text-zinc-500 text-[10px] uppercase font-bold tracking-widest">{item.sources.length} 来源</span>
+    <div class="card-dark p-4 md:p-6 flex-grow basis-full lg:basis-[calc(50%-12px)] min-w-0 lg:min-w-[400px]">
+      <div class="flex flex-wrap justify-between items-center gap-2 mb-4">
+        <h4 class="font-bold text-main break-words">{item.group}</h4>
+        <span class="text-muted text-[10px] uppercase font-bold tracking-widest flex-shrink-0 opacity-80">{item.sources.length} 来源</span>
       </div>
-      <p class="text-zinc-400 text-sm mb-4 leading-relaxed">{item.summary}</p>
+      <p class="text-muted text-sm mb-4 leading-relaxed break-words">{item.summary} </p>
       
       {item.note && (
-        <div class={`pl-3 border-l-2 ${item.type === 'science' || item.type === 'policy' || item.type === 'market' || item.type === 'product' ? 'border-blue-500' : 'border-zinc-700'} py-1`}>
-          <p class="text-zinc-500 text-xs">{item.note}</p>
+        <div class={`pl-3 border-l-2 ${item.type === 'science' || item.type === 'policy' || item.type === 'market' || item.type === 'product' ? 'border-blue-500' : 'border-color'} py-1`}>
+          <p class="text-muted text-xs break-words italic">{item.note}</p>
         </div>
       )}
     </div>

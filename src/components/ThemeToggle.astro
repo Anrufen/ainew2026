@@ -1,0 +1,96 @@
+---
+---
+<div class="theme-toggle flex p-1 bg-subtle dark-theme-bg rounded-lg border border-color" data-purpose="theme-toggle">
+  <button 
+    id="theme-light" 
+    class="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-bold transition-all"
+    title="浅色模式"
+  >
+    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M12 5a7 7 0 100 14 7 7 0 000-14z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+    <span class="hidden sm:inline">浅色</span>
+  </button>
+  <button 
+    id="theme-dark" 
+    class="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-bold transition-all"
+    title="深色模式"
+  >
+    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+    <span class="hidden sm:inline">深色</span>
+  </button>
+  <button 
+    id="theme-system" 
+    class="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-bold transition-all"
+    title="跟随系统"
+  >
+    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+    <span class="hidden sm:inline">系统</span>
+  </button>
+</div>
+
+<style>
+  .dark-theme-bg {
+    background-color: transparent;
+  }
+  
+  button {
+    color: var(--text-muted);
+  }
+  
+  button:hover {
+    color: var(--text-main);
+    background-color: var(--border-color);
+  }
+
+  button.active {
+    background-color: var(--bg-card);
+    color: var(--blue-accent);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Specific handling to override global active shadow in dark mode if needed, though global border-color works cleanly */
+  :global([data-theme='dark']) button.active {
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  }
+</style>
+
+<script is:inline>
+  const updateThemeUI = (theme) => {
+    const buttons = {
+      light: document.getElementById('theme-light'),
+      dark: document.getElementById('theme-dark'),
+      system: document.getElementById('theme-system'),
+    };
+    
+    Object.values(buttons).forEach(btn => btn?.classList.remove('active'));
+    if (buttons[theme]) buttons[theme].classList.add('active');
+  };
+
+  const setTheme = (theme) => {
+    const root = document.documentElement;
+    if (theme === 'system') {
+      const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      root.setAttribute('data-theme', isDark ? 'dark' : 'light');
+      localStorage.setItem('theme-choice', 'system');
+    } else {
+      root.setAttribute('data-theme', theme);
+      localStorage.setItem('theme-choice', theme);
+    }
+    updateThemeUI(theme);
+  };
+
+  // Init
+  const savedChoice = localStorage.getItem('theme-choice') || 'light';
+  setTheme(savedChoice);
+
+  // Listeners
+  document.getElementById('theme-light')?.addEventListener('click', () => setTheme('light'));
+  document.getElementById('theme-dark')?.addEventListener('click', () => setTheme('dark'));
+  document.getElementById('theme-system')?.addEventListener('click', () => setTheme('system'));
+
+  // System listener
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+    if (localStorage.getItem('theme-choice') === 'system') {
+      document.documentElement.setAttribute('data-theme', e.matches ? 'dark' : 'light');
+    }
+  });
+</script>

@@ -7,9 +7,9 @@ interface Props {
 
 const { highlights } = Astro.props;
 ---
-<div class="flex flex-wrap gap-6">
+<div class="flex flex-wrap gap-4 md:gap-6">
   {highlights.map((h, index) => (
-    <div class={`flex-grow ${index === 0 ? "basis-full" : "basis-[calc(50%-12px)] min-w-[400px]"}`}>
+    <div class={`flex-grow min-w-0 ${index === 0 ? "basis-full" : "basis-full lg:basis-[calc(50%-12px)] lg:min-w-[400px]"}`}>
       <NewsCard highlight={h} featured={index === 0} />
     </div>
   ))}

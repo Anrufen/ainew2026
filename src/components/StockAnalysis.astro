@@ -11,43 +11,64 @@ interface Props {
 const { stocks } = Astro.props;
 
 function getSentimentClass(sentiment: string) {
-  if (sentiment.includes('利好')) return 'bg-green-900/30 text-green-400 border-green-800/50';
-  if (sentiment.includes('中性偏多')) return 'bg-emerald-900/30 text-emerald-400 border-emerald-800/50';
-  if (sentiment.includes('利空')) return 'bg-red-900/30 text-red-400 border-red-800/50';
-  return 'bg-zinc-800 text-zinc-400 border-zinc-700/50';
+  if (sentiment.includes('利好')) return 'sentiment-positive';
+  if (sentiment.includes('中性偏多')) return 'sentiment-positive opacity-90';
+  if (sentiment.includes('利空')) return 'sentiment-negative';
+  return 'sentiment-neutral';
 }
 ---
 
 <div class="card-dark overflow-hidden">
-  <table class="w-full text-left">
-    <thead class="bg-zinc-900/50 border-b border-zinc-800">
-      <tr>
-        <th class="px-8 py-4 text-xs font-bold text-zinc-500 uppercase tracking-wider">股票代码</th>
-        <th class="px-8 py-4 text-xs font-bold text-zinc-500 uppercase tracking-wider">市场情绪</th>
-        <th class="px-8 py-4 text-xs font-bold text-zinc-500 uppercase tracking-wider">投资逻辑</th>
-        <th class="px-8 py-4"></th>
-      </tr>
-    </thead>
-    <tbody class="divide-y divide-zinc-800">
-      {stocks.map(s => (
-        <tr class="hover:bg-white/5 transition-colors">
-          <td class="px-8 py-6 font-black text-white">{s.ticker}</td>
-          <td class="px-8 py-6">
-            <span class={`px-3 py-1 rounded-full text-[10px] font-bold border whitespace-nowrap inline-block ${getSentimentClass(s.sentiment)}`}>
-              {s.sentiment}
-            </span>
-          </td>
-          <td class="px-8 py-6">
-            <p class="text-zinc-300 text-sm font-medium mb-1">{s.logic}</p>
-            <p class="text-zinc-500 text-xs leading-relaxed">{s.details}</p>
-          </td>
-          <td class="px-8 py-6 text-zinc-600">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path d="M9 5l7 7-7 7"></path>
-            </svg>
-          </td>
+  <!-- Desktop Table -->
+  <div class="hidden md:block overflow-x-auto">
+    <table class="w-full text-left">
+      <thead class="bg-subtle border-b border-color">
+        <tr>
+          <th class="px-8 py-4 text-xs font-bold text-muted uppercase tracking-wider">股票代码</th>
+          <th class="px-8 py-4 text-xs font-bold text-muted uppercase tracking-wider">市场情绪</th>
+          <th class="px-8 py-4 text-xs font-bold text-muted uppercase tracking-wider">投资逻辑</th>
+          <th class="px-8 py-4"></th>
         </tr>
-      ))}
-    </tbody>
-  </table>
+      </thead>
+      <tbody class="divide-y border-color">
+        {stocks.map(s => (
+          <tr class="hover:bg-main transition-colors">
+            <td class="px-8 py-6 font-black text-main">{s.ticker}</td>
+            <td class="px-8 py-6">
+              <span class={`px-3 py-1 rounded-full text-[10px] font-bold border whitespace-nowrap inline-block ${getSentimentClass(s.sentiment)}`}>
+                {s.sentiment}
+              </span>
+            </td>
+            <td class="px-8 py-6">
+              <p class="text-main text-sm font-medium mb-1">{s.logic}</p>
+              <p class="text-muted text-xs leading-relaxed">{s.details}</p>
+            </td>
+            <td class="px-8 py-6 text-muted/60">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path d="M9 5l7 7-7 7"></path>
+              </svg>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Mobile Cards -->
+  <div class="md:hidden divide-y border-color">
+    {stocks.map(s => (
+      <div class="p-4 space-y-4">
+        <div class="flex flex-wrap justify-between items-start gap-2">
+          <span class="font-black text-main text-lg break-words">{s.ticker}</span>
+          <span class={`px-2 py-0.5 rounded-full text-[9px] font-bold border whitespace-nowrap ${getSentimentClass(s.sentiment)}`}>
+            {s.sentiment}
+          </span>
+        </div>
+        <div>
+          <p class="text-main text-sm font-medium mb-1 break-words">{s.logic}</p>
+          <p class="text-muted text-xs leading-relaxed break-words">{s.details}</p>
+        </div>
+      </div>
+    ))}
+  </div>
 </div>
